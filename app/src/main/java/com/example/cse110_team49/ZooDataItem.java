@@ -1,9 +1,13 @@
 package com.example.cse110_team49;
 
+import android.content.Context;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,26 +41,36 @@ public class ZooDataItem {
         public String street;
     }
 
-    public static Map<String, ZooDataItem.VertexInfo> loadVertexInfoJSON(String path) {
-        InputStream inputStream = MainActivity.class.getClassLoader().getResourceAsStream(path);
-        Reader reader = new InputStreamReader(inputStream);
+    public static Map<String, ZooDataItem.VertexInfo> loadVertexInfoJSON(Context context, String path) {
+        try {
+            InputStream inputStream = context.getAssets().open(path);
 
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ZooDataItem.VertexInfo>>(){}.getType();
-        List<ZooDataItem.VertexInfo> zooData = gson.fromJson(reader, type);
+            Reader reader = new InputStreamReader(inputStream);
 
-        // This code is equivalent to:
-        //
-        // Map<String, ZooData.VertexInfo> indexedZooData = new HashMap();
-        // for (ZooData.VertexInfo datum : zooData) {
-        //   indexedZooData[datum.id] = datum;
-        // }
-        //
-        Map<String, ZooDataItem.VertexInfo> indexedZooData = zooData
-                .stream()
-                .collect(Collectors.toMap(v -> v.id, datum -> datum));
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<VertexInfo>>() {
+            }.getType();
+            List<VertexInfo> zooData = gson.fromJson(reader, type);
 
-        return indexedZooData;
+            // This code is equivalent to:
+            //
+            // Map<String, ZooData.VertexInfo> indexedZooData = new HashMap();
+            // for (ZooData.VertexInfo datum : zooData) {
+            //   indexedZooData[datum.id] = datum;
+            // }
+            //
+            Map<String, VertexInfo> indexedZooData = zooData
+                    .stream()
+                    .collect(Collectors.toMap(v -> v.id, datum -> datum));
+
+
+            return indexedZooData;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
     public static Map<String, ZooDataItem.EdgeInfo> loadEdgeInfoJSON(String path) {
