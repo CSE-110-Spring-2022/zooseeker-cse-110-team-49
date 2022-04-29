@@ -63,7 +63,7 @@ public class ZooDataItem {
                     .stream()
                     .collect(Collectors.toMap(v -> v.id, datum -> datum));
 
-
+            reader.close();
             return indexedZooData;
         }
         catch (IOException e) {
