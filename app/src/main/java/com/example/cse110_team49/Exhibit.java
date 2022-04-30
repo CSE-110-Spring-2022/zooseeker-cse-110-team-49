@@ -23,7 +23,11 @@ public class Exhibit {
     @NonNull
     private String name;
 
-    Exhibit(@NonNull String name) {
+    @NonNull
+    private String itemId;
+
+    Exhibit(@NonNull String itemId, @NonNull String name) {
+        this.itemId = itemId;
         this.name = name;
     }
 
@@ -36,11 +40,17 @@ public class Exhibit {
         return name;
     }
 
+    @NonNull
+    public String getItemId() {
+        return itemId;
+    }
+
     @Override
     public String toString() {
         return "Exhibit{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", itemId='" + itemId + '\'' +
                 '}';
     }
 

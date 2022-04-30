@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Exhibit.class}, version = 1)
+@Database(entities = {Exhibit.class}, version = 2)
 public abstract class ExhibitDatabase extends RoomDatabase {
     private static ExhibitDatabase singleton = null;
     public abstract ExhibitDao exhibitDao();
@@ -33,19 +33,15 @@ public abstract class ExhibitDatabase extends RoomDatabase {
     }
 
     private static ExhibitDatabase makeDatabase(Context context) {
-        return Room.databaseBuilder(context, ExhibitDatabase.class, "exhibit1.db")
+        return Room.databaseBuilder(context, ExhibitDatabase.class, "exhibit.db")
                 .allowMainThreadQueries()
                 .addCallback(new Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
-                        Executors.newSingleThreadExecutor().execute(() -> {
-                            List<Exhibit> exhibits = Exhibit
-                                    .loadJSON(context, "sample_node_info.json");
-                            getSingleton(context).exhibitDao().insertAll(exhibits);
-                        });
                     }
                 })
+                .fallbackToDestructiveMigration()
                 .build();
     }
 }
