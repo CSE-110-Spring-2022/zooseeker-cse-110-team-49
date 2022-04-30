@@ -24,7 +24,6 @@ public class Exhibit {
     private String name;
 
     Exhibit(@NonNull String name) {
-        this.id = id;
         this.name = name;
     }
 

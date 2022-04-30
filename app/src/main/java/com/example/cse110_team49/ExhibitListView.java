@@ -13,8 +13,6 @@ import java.util.ArrayList;
 
 public class ExhibitListView extends AppCompatActivity {
 
-    ArrayList<Exhibit> exhibitList;
-    Exhibit            currentLocation;
     public RecyclerView recyclerView;
     private ExhibitListViewModel viewModel;
 

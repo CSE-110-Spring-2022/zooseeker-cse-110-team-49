@@ -33,7 +33,7 @@ public abstract class ExhibitDatabase extends RoomDatabase {
     }
 
     private static ExhibitDatabase makeDatabase(Context context) {
-        return Room.databaseBuilder(context, ExhibitDatabase.class, "exhibit.db")
+        return Room.databaseBuilder(context, ExhibitDatabase.class, "exhibit1.db")
                 .allowMainThreadQueries()
                 .addCallback(new Callback() {
                     @Override
