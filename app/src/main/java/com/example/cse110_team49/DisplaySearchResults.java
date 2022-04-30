@@ -54,9 +54,12 @@ public class DisplaySearchResults extends AppCompatActivity {
             }
 
         }
-//        ArrayList<String> idList = reversedVInfo.get(input);
+        ArrayList<String> idList = reversedVInfo.get(input);
+
+        System.out.println(input);
 
         System.out.println(reversedVInfo);
+        System.out.println(idList);
 
     }
 }

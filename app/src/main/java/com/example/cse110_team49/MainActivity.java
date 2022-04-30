@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -62,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void setOnClicktoSearch(View view) {
         Intent search_page = new Intent(this, DisplaySearchResults.class);
-        EditText search_input = findViewById(R.id.searchInput);
+        TextView search_input = findViewById(R.id.searchInput);
 
-        search_page.putExtra("input", search_input.getText());
+        search_page.putExtra("input", search_input.getText().toString());
         startActivity(search_page);
     }
 }
