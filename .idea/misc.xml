@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Junwei/Documents/GitHub/zooseeker-cse-110-team-49/app/src/main/res/layout/activity_main.xml" value="0.2604166666666667" />
+        <entry key="app/src/main/res/layout/activity_exhibit_list_view.xml" value="0.17798913043478262" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17798913043478262" />
+        <entry key="app/src/main/res/layout/exhibit.xml" value="0.17798913043478262" />
       </map>
     </option>
   </component>

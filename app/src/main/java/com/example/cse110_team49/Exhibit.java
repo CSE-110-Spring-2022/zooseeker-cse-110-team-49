@@ -1,24 +1,61 @@
 package com.example.cse110_team49;
 
-import java.util.ArrayList;
+import android.content.Context;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.List;
 
+@Entity(tableName = "exhibit_table")
 public class Exhibit {
-    private String id;
-    private String itemType;
-    private ArrayList<String> tags;
 
-    Exhibit(String id, String itemType, ArrayList<String> tags) {
+    @PrimaryKey(autoGenerate = true)
+    public long id;
+
+    @NonNull
+    private String name;
+
+    Exhibit(@NonNull String name) {
         this.id = id;
-        this.itemType = itemType;
-        this.tags = tags;
+        this.name = name;
     }
 
-    public String getItemType() {
-        return itemType;
+    public long getId() {
+        return id;
     }
 
-    public ArrayList<String> getTags() {
-        return tags;
+    @NonNull
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Exhibit{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    public static List<Exhibit> loadJSON(Context context, String path) {
+        try {
+            InputStream input = context.getAssets().open(path);
+            Reader reader = new InputStreamReader(input);
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Exhibit>>(){}.getType();
+            return gson.fromJson(reader, type);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
 
 }

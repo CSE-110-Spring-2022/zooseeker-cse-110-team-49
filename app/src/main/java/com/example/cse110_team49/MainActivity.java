@@ -2,11 +2,8 @@ package com.example.cse110_team49;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +66,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+
         System.out.println(reversedVInfo);
+
+        findViewById(R.id.map).setOnClickListener(view -> {
+            Intent intent = new Intent(this, ExhibitListView.class);
+            startActivity(intent);
+        });
 
 
 //        Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON("sample_edge_info.json");
@@ -86,5 +89,7 @@ public class MainActivity extends AppCompatActivity {
 //                    vInfo.get(g.getEdgeTarget(e).toString()).name);
 //            i++;
 //        }
+
+
     }
 }
