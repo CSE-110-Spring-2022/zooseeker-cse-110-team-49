@@ -11,7 +11,10 @@
         android:theme="@style/Theme.CSE110Team49">
         <activity
             android:name=".DisplaySearchResults"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".ExhibitListView"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
