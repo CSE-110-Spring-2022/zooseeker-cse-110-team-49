@@ -67,9 +67,9 @@ public class DisplaySearchResults extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        if (reversedVInfo.containsKey(input) == false) {
-            Utilities.showAlert(this, "Sorry we don't have this animal, please go back and try another!");
-
+        if (!reversedVInfo.containsKey(input)) {
+//            Utilities.showAlert(this, "Sorry we don't have this animal, please go back and try another!");
+            Utils.alertDialogShow(DisplaySearchResults.this,"Sorry we don't have this animal");
         }
         else {
             ArrayList<String> idList = reversedVInfo.get(input);
