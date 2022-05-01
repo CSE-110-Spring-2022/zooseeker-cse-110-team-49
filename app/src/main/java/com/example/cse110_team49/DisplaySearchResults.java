@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -59,27 +60,25 @@ public class DisplaySearchResults extends AppCompatActivity {
             }
 
         }
-        ArrayList<String> idList = reversedVInfo.get(input);
-        List<ZooDataItem.VertexInfo> animalList = new ArrayList<>();
-        for (String s: idList){
-            animalList.add(vInfo.get(s));
-        }
-
-        System.out.println(animalList.get(0).name);
-
-//        System.out.println(input);
-//
-//        System.out.println(reversedVInfo);
-//        System.out.println(idList);
 
         AnimalAdapter adapter = new AnimalAdapter();
         adapter.setHasStableIds(true);
-
         recyclerView = findViewById(R.id.animal_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        adapter.setAnimalItems(animalList);
+        if (reversedVInfo.containsKey(input) == false) {
+            Utilities.showAlert(this, "Sorry we don't have this animal, please go back and try another!");
 
+        }
+        else {
+            ArrayList<String> idList = reversedVInfo.get(input);
+            List<ZooDataItem.VertexInfo> animalList = new ArrayList<>();
+            for (String s : idList) {
+                animalList.add(vInfo.get(s));
+            }
+            adapter.setAnimalItems(animalList);
+        }
     }
+
 }
