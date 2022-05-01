@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(reversedVInfo);
 
-        findViewById(R.id.map).setOnClickListener(view -> {
+        findViewById(R.id.myList).setOnClickListener(view -> {
             Intent intent = new Intent(this, ExhibitListView.class);
             startActivity(intent);
         });
