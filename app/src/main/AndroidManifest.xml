@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSE110Team49">
         <activity
-            android:name=".ExhibitListView"
+            android:name=".DisplaySearchResults"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

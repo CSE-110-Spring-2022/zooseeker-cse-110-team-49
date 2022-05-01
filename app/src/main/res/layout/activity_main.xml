@@ -8,10 +8,9 @@
 
 
     <EditText
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="120dp"
+        android:id="@+id/searchInput"
+        android:layout_width="283dp"
+        android:layout_height="52dp"
         android:hint="Search..."
         android:inputType="text"
         android:maxLines="1"
@@ -19,22 +18,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="95dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="16dp"
+        android:id="@+id/searchButton"
+        android:layout_width="103dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="7dp"
+        android:onClick="setOnClicktoSearch"
         android:text="Search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/myList"
-        android:layout_width="95dp"
-        android:layout_height="55dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
-        android:text="MY LIST"
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="28dp"
+        android:text="LIST"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

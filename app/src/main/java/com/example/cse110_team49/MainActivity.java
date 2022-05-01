@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +20,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // "source" and "sink" are graph terms for the start and end
-        String start = "entrance_exit_gate";
-        String goal = "elephant_odyssey";
+//        String start = "entrance_exit_gate";
+//        String goal = "elephant_odyssey";
+
+
 
         // 1. Load the graph...
 //        Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON("sample_zoo_graph.json");
@@ -91,5 +96,13 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
 
+    }
+
+    public void setOnClicktoSearch(View view) {
+        Intent search_page = new Intent(this, DisplaySearchResults.class);
+        TextView search_input = findViewById(R.id.searchInput);
+
+        search_page.putExtra("input", search_input.getText().toString());
+        startActivity(search_page);
     }
 }
