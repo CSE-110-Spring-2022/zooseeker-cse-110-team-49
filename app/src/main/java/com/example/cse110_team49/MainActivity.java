@@ -8,10 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +38,46 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println("exception");
 //        }
 
+        Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+        Map<String, ArrayList<String>>  reversedVInfo = new HashMap<>();
+        for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()){
+            String key = entry.getKey();
+            ZooDataItem.VertexInfo value = entry.getValue();
+            for (String tagValue: value.tags) {
+                ArrayList<String> s = reversedVInfo.get(tagValue);
+                if (s == null) {
+                    ArrayList<String> newIdList = new ArrayList<>();
+                    newIdList.add(value.id);
+                    reversedVInfo.put(tagValue, newIdList);
+                }
+                else {
+                    s.add(value.id);
+                    reversedVInfo.put(tagValue, s);
+                }
+            }
 
+            for (String nameValue: value.name.toLowerCase().split(" ")){
+                ArrayList<String> s = reversedVInfo.get(nameValue);
+                if (s == null) {
+                    ArrayList<String> newIdList = new ArrayList<>();
+                    newIdList.add(value.id);
+                    reversedVInfo.put(nameValue, newIdList);
+                }
+                else {
+                    s.add(value.id);
+                    reversedVInfo.put(nameValue, s);
+                }
+            }
+
+
+        }
+
+        System.out.println(reversedVInfo);
+
+        findViewById(R.id.myList).setOnClickListener(view -> {
+            Intent intent = new Intent(this, ExhibitListView.class);
+            startActivity(intent);
+        });
 
 
 //        Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON("sample_edge_info.json");
@@ -59,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 //                    vInfo.get(g.getEdgeTarget(e).toString()).name);
 //            i++;
 //        }
+
+
     }
 
     public void setOnClicktoSearch(View view) {
