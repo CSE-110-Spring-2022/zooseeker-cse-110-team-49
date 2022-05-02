@@ -1,5 +1,10 @@
 package com.example.cse110_team49;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import android.content.Context;
 
 import androidx.room.Room;
@@ -8,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
@@ -24,6 +30,34 @@ public class AnimalDatabaseTest {
                 .allowMainThreadQueries()
                 .build();
         dao = db.exhibitDao();
+    }
+
+    @Test
+    public void testInsert() {
+        Exhibit item1 = new Exhibit("gorillas", "Gorillas");
+        Exhibit item2 = new Exhibit("lions", "Lions");
+
+        long id1 = dao.insert(item1);
+        long id2 = dao.insert(item2);
+
+        assertNotEquals(id1, id2);
+
+//        dao.delete(item1);
+//        dao.delete(item2);
+    }
+
+    @Test
+    public void testDelete() {
+        Exhibit item = new Exhibit("monkey", "Monkey");
+
+        dao.insert(item);
+        item = dao.get("Monkey");
+        assertNotNull(item);
+
+        dao.delete(item);
+        item = dao.get("Monkey");
+
+        assertNull(item);
     }
 
     @After
