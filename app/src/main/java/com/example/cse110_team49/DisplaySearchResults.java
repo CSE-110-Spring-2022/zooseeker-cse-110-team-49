@@ -26,7 +26,7 @@ public class DisplaySearchResults extends AppCompatActivity {
         setContentView(R.layout.activity_display_search_results);
 
         Bundle extras = getIntent().getExtras();
-        String input = extras.getString("input");
+        String input = extras.getString("input").toLowerCase();
 
         Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
         Map<String, ArrayList<String>>  reversedVInfo = new HashMap<>();
