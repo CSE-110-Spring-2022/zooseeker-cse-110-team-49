@@ -61,10 +61,16 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         public void setAnimalItem(ZooDataItem.VertexInfo animalItem) {
             this.animalItem = animalItem;
             this.textView.setText(animalItem.name);
+
+            ExhibitDatabase db = ExhibitDatabase.getSingleton(textView.getContext());
+            ExhibitDao exhibitDao = db.exhibitDao();
+
+            if (exhibitDao.get(animalItem.name) != null) {
+                addButton.setText("Done!");
+                itemView.findViewById(R.id.add_animal).setBackgroundColor(Color.GRAY);
+            }
+
             addButton.setOnClickListener(view -> {
-                Context context = view.getContext();
-                ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
-                ExhibitDao exhibitDao = db.exhibitDao();
                 
                 Exhibit theExhibit = exhibitDao.get(animalItem.name);
                 if (theExhibit == null) {
