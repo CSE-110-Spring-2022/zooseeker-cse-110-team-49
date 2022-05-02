@@ -21,7 +21,7 @@
         tools:textFontWeight="700" />
 
     <Button
-        android:id="@+id/add"
+        android:id="@+id/add_animal"
         android:layout_width="80dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
@@ -29,4 +29,5 @@
         android:text="Add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
