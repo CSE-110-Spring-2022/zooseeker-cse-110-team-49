@@ -15,11 +15,7 @@ jobs:
 
       # Execute unit tests
       - name: Unit Test
-        run: ./gradlew AnimalDatabaseTest
-
-      # Compile tests
-      - name: Compile Test
-        run: ./gradlew CompileTest
+        run: ./gradlew testDebugUnitTest
 
       # Report the results
       - name: Android Test Report
