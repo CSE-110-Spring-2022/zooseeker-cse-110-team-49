@@ -1,6 +1,7 @@
 package com.example.cse110_team49;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,8 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
                 ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
                 ExhibitDao exhibitDao = db.exhibitDao();
                 exhibitDao.insert(theExhibit);
+                addButton.setText("Done!");
+                itemView.findViewById(R.id.add_animal).setBackgroundColor(Color.GRAY);
             });
         }
     }
