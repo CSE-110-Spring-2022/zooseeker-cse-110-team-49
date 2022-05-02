@@ -28,11 +28,8 @@ public class ExhibitListView extends AppCompatActivity {
                 .get(ExhibitListViewModel.class);
 
         initializeView();
-
-
         ExhibitAdapter adapter = new ExhibitAdapter();
         adapter.setHasStableIds(true);
-        adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         viewModel.getExhibits().observe(this, adapter::setExhibits);
 
         recyclerView = findViewById(R.id.exhibits);
