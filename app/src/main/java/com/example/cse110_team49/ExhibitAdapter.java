@@ -48,13 +48,6 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
         return exhibits.size();
     }
 
-    /*
-    @Override
-    public long getItemId(int position) {
-        return exhibits.get(position).id;
-    }
-    */
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView textView;
@@ -70,7 +63,7 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
             });
         }
 
-        public Exhibit getTodoItem() {
+        public Exhibit getExhibit() {
             return exhibit;
         }
 
