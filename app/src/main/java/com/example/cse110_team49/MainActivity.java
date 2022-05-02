@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        System.out.println(reversedVInfo);
+//        System.out.println(reversedVInfo);
 
         findViewById(R.id.myList).setOnClickListener(view -> {
             Intent intent = new Intent(this, ExhibitListView.class);
