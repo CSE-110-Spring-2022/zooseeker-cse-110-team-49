@@ -21,14 +21,11 @@ public interface ExhibitDao {
     @Query("SELECT * FROM `exhibit_table` ORDER BY `id`")
     LiveData<List<Exhibit>> getAllLive();
 
-    @Query("SELECT * FROM `exhibit_table` WHERE `id`=:id")
-    Exhibit get(long id);
+    @Query("SELECT * FROM `exhibit_table` WHERE `name`=:name")
+    Exhibit get(String name);
 
     @Query("SELECT * FROM `exhibit_table` ORDER BY `id`")
     List<Exhibit> getAll();
-
-    @Query("SELECT `id` + 1 FROM `exhibit_table` ORDER BY `id` DESC LIMIT 1")
-    int getOrderForAppend();
 
     @Update
     int update(Exhibit todoListItem);
