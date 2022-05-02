@@ -7,12 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ExhibitListView extends AppCompatActivity {
 
@@ -27,9 +30,18 @@ public class ExhibitListView extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(ExhibitListViewModel.class);
 
-        initializeView();
+
+        new Timer().scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                initializeView();
+            }
+        },0,500);
+
+
         ExhibitAdapter adapter = new ExhibitAdapter();
         adapter.setHasStableIds(true);
+        adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         viewModel.getExhibits().observe(this, adapter::setExhibits);
 
         recyclerView = findViewById(R.id.exhibits);
@@ -46,7 +58,7 @@ public class ExhibitListView extends AppCompatActivity {
         if (exhibitDao.getAll() != null) {
             theCount = exhibitDao.getAll().size();
         }
-        countView.setText("Count: " + String.valueOf(theCount));
+        countView.setText("Count:" + String.valueOf(theCount));
     }
 
     public void onGoBackClicked(View view) {
