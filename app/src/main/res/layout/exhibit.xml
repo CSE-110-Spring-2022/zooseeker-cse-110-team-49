@@ -8,42 +8,49 @@
 
     <TextView
         android:id="@+id/exhibit_name"
-        android:layout_width="317dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="190dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="00dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
+        android:gravity="center_vertical|left"
         android:text="temp"
-        android:inputType="text"
-        android:maxLines="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545" />
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/delete_btn"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toEndOf="@+id/navigation"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/navigation"
-        android:layout_width="40dp"
+        android:layout_width="90dp"
         android:layout_height="40dp"
-        android:text="navigation"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="navigate"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.016"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.142" />
 
     <TextView
         android:id="@+id/delete_btn"
-        android:layout_width="44dp"
-        android:layout_height="33dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:clickable="true"
         android:gravity="center"
         android:text="X"
+        android:textSize="16sp"
+        android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintHorizontal_bias="0.98"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
