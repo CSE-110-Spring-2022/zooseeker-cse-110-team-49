@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DisplaySearchResults extends AppCompatActivity {
+public class DisplaySearchResultsActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     public Button backButton;
@@ -73,7 +71,7 @@ public class DisplaySearchResults extends AppCompatActivity {
 
         if (!reversedVInfo.containsKey(input)) {
 //            Utilities.showAlert(this, "Sorry we don't have this animal, please go back and try another!");
-            Utils.alertDialogShow(DisplaySearchResults.this,"Sorry we don't have this animal");
+            Utils.alertDialogShow(DisplaySearchResultsActivity.this,"Sorry we don't have this animal");
         }
         else {
             ArrayList<String> idList = reversedVInfo.get(input);

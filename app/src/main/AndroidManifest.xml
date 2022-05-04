@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSE110Team49">
         <activity
-            android:name=".DisplaySearchResults"
+            android:name=".DisplaySearchResultsActivity"
             android:exported="true" />
         <activity
-            android:name=".ExhibitListView"
+            android:name=".ExhibitListViewActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
