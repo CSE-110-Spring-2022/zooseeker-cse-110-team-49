@@ -28,7 +28,6 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     private ExhibitListViewModel viewModel;
 
 
-//    Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +58,8 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         adapter.setOnNavigateButtonClicked((exhibit) -> {
             Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+            intent.putExtra("destination", exhibit.getItemId());
+            intent.putExtra("from", currentLocationID);
             startActivity(intent);
         });
         viewModel.getExhibits().observe(this, adapter::setExhibits);
