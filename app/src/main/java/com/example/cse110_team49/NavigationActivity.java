@@ -26,6 +26,9 @@ public class NavigationActivity extends AppCompatActivity {
         Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
         Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
 
+        String destinationName = vInfo.get(destination).name;
+        String currentLocationName = vInfo.get(currentLocation).name;
+
         Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, currentLocation, destination);
 
@@ -33,8 +36,8 @@ public class NavigationActivity extends AppCompatActivity {
         TextView to = findViewById(R.id.to);
         TextView navigation = findViewById(R.id.nav);
 
-        from.setText(currentLocation);
-        to.setText(destination);
+        from.setText(currentLocationName);
+        to.setText(destinationName);
 
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
