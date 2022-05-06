@@ -17,6 +17,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
+import com.google.gson.Gson;
+
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
         Map<String, ArrayList<String>>  reversedVInfo = new HashMap<>();
         for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()){
@@ -127,7 +134,24 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.myList).setOnClickListener(view -> {
             Intent intent = new Intent(this, ExhibitListViewActivity.class);
             startActivity(intent);
+
         });
+
+
+        Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+
+        System.out.printf("The shortest path from '%s' to '%s' is:\n", start, goal);
+
+        int i = 1;
+        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+            System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
+                    i,
+                    g.getEdgeWeight(e),
+                    eInfo.get(e.getId()).street,
+                    vInfo.get(g.getEdgeSource(e).toString()).name,
+                    vInfo.get(g.getEdgeTarget(e).toString()).name);
+            i++;
+        }
     }
 
     public void setOnClicktoSearch(View view) {

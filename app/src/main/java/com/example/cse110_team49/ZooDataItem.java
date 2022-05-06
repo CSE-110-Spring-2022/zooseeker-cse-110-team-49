@@ -71,44 +71,62 @@ public class ZooDataItem {
         }
     }
 
-    public static Map<String, ZooDataItem.EdgeInfo> loadEdgeInfoJSON(String path) {
-        InputStream inputStream = MainActivity.class.getClassLoader().getResourceAsStream(path);
-        Reader reader = new InputStreamReader(inputStream);
+    public static Map<String, ZooDataItem.EdgeInfo> loadEdgeInfoJSON(Context context, String path) {
+        try {
+            InputStream inputStream = context.getAssets().open(path);
+//        InputStream inputStream = MainActivity.class.getClassLoader().getResourceAsStream(path);
+            Reader reader = new InputStreamReader(inputStream);
 
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ZooDataItem.EdgeInfo>>(){}.getType();
-        List<ZooDataItem.EdgeInfo> zooData = gson.fromJson(reader, type);
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<ZooDataItem.EdgeInfo>>() {
+            }.getType();
+            List<ZooDataItem.EdgeInfo> zooData = gson.fromJson(reader, type);
 
-        Map<String, ZooDataItem.EdgeInfo> indexedZooData = zooData
-                .stream()
-                .collect(Collectors.toMap(v -> v.id, datum -> datum));
+            Map<String, ZooDataItem.EdgeInfo> indexedZooData = zooData
+                    .stream()
+                    .collect(Collectors.toMap(v -> v.id, datum -> datum));
 
-        return indexedZooData;
+            return indexedZooData;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
-    public static Graph<String, IdentifiedWeightedEdge> loadZooGraphJSON(String path) {
+    public static Graph<String, IdentifiedWeightedEdge> loadZooGraphJSON(Context context, String path) {
         // Create an empty graph to populate.
-        Graph<String, IdentifiedWeightedEdge> g = new DefaultUndirectedWeightedGraph<>(IdentifiedWeightedEdge.class);
+        try {
+            InputStream inputStream = context.getAssets().open(path);
+            Graph<String, IdentifiedWeightedEdge> g = new DefaultUndirectedWeightedGraph<>(IdentifiedWeightedEdge.class);
 
-        // Create an importer that can be used to populate our empty graph.
-        JSONImporter<String, IdentifiedWeightedEdge> importer = new JSONImporter<>();
+            // Create an importer that can be used to populate our empty graph.
+            JSONImporter<String, IdentifiedWeightedEdge> importer = new JSONImporter<>();
 
-        // We don't need to convert the vertices in the graph, so we return them as is.
-        importer.setVertexFactory(v -> v);
+            // We don't need to convert the vertices in the graph, so we return them as is.
+            importer.setVertexFactory(v -> v);
 
-        // We need to make sure we set the IDs on our edges from the 'id' attribute.
-        // While this is automatic for vertices, it isn't for edges. We keep the
-        // definition of this in the IdentifiedWeightedEdge class for convenience.
-        importer.addEdgeAttributeConsumer(IdentifiedWeightedEdge::attributeConsumer);
+            // We need to make sure we set the IDs on our edges from the 'id' attribute.
+            // While this is automatic for vertices, it isn't for edges. We keep the
+            // definition of this in the IdentifiedWeightedEdge class for convenience.
+            importer.addEdgeAttributeConsumer(IdentifiedWeightedEdge::attributeConsumer);
 
-        // On Android, you would use context.getAssets().open(path) here like in Lab 5.
-        InputStream inputStream = MainActivity.class.getClassLoader().getResourceAsStream(path);
-        Reader reader = new InputStreamReader(inputStream);
+            // On Android, you would use context.getAssets().open(path) here like in Lab 5.
+            //        InputStream inputStream = MainActivity.class.getClassLoader().getResourceAsStream(path);
+            Reader reader = new InputStreamReader(inputStream);
 
-        // And now we just import it!
-        importer.importGraph(g, reader);
+            // And now we just import it!
+            importer.importGraph(g, reader);
 
-        return g;
+            return g;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+
     }
 
 }

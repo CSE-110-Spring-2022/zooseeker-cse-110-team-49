@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -79,6 +82,8 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
                 }
                 addButton.setText("Done!");
                 itemView.findViewById(R.id.add_animal).setBackgroundColor(Color.GRAY);
+
+
 
             });
         }

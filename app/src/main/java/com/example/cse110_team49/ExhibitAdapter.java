@@ -3,11 +3,16 @@ package com.example.cse110_team49;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +23,13 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
 
     private List<Exhibit> exhibits = Collections.emptyList();
     private Consumer<Exhibit> onDeleteButtonClicked;
+
+    Graph<String, IdentifiedWeightedEdge> g;
+    public void loadGraph(Graph<String, IdentifiedWeightedEdge> g) {
+        this.g = g;
+    }
     private Consumer<Exhibit> onNavigateButtonClicked;
+
 
     public void setExhibits(List<Exhibit> newExhibits) {
         this.exhibits.clear();
@@ -57,10 +68,12 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
 
         private final TextView textView;
         private Exhibit exhibit;
+        private Button navigation;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.exhibit_name);
+            this.navigation = itemView.findViewById(R.id.navigation);
 
             itemView.findViewById(R.id.delete_btn).setOnClickListener(view -> {
                 if (onDeleteButtonClicked == null) return;
@@ -79,6 +92,10 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
 
         public void setTodoItem(Exhibit exhibit) {
             this.exhibit = exhibit;
+            DijkstraShortestPath d = new DijkstraShortestPath(g);
+            double weight = d.getPathWeight("entrance_exit_gate", exhibit.getItemId());
+            this.navigation.setText("navigate\n" + String.valueOf((int)weight) + "m");
+
             this.textView.setText(exhibit.getName());
         }
     }
