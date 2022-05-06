@@ -18,6 +18,7 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
 
     private List<Exhibit> exhibits = Collections.emptyList();
     private Consumer<Exhibit> onDeleteButtonClicked;
+    private Consumer<Exhibit> onNavigateButtonClicked;
 
     public void setExhibits(List<Exhibit> newExhibits) {
         this.exhibits.clear();
@@ -27,6 +28,10 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
 
     public void setOnDeleteButtonClickedHandler(Consumer<Exhibit> onDeleteButtonClicked) {
         this.onDeleteButtonClicked = onDeleteButtonClicked;
+    }
+
+    public void setOnNavigateButtonClicked(Consumer<Exhibit> onNavigateButtonClicked) {
+        this.onNavigateButtonClicked = onNavigateButtonClicked;
     }
 
     @NonNull
@@ -60,6 +65,11 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
             itemView.findViewById(R.id.delete_btn).setOnClickListener(view -> {
                 if (onDeleteButtonClicked == null) return;
                 onDeleteButtonClicked.accept(exhibit);
+            });
+
+            itemView.findViewById(R.id.navigation).setOnClickListener(view -> {
+                if (onNavigateButtonClicked == null) return;
+                onNavigateButtonClicked.accept(exhibit);
             });
         }
 
