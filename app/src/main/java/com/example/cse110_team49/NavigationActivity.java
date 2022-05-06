@@ -41,6 +41,7 @@ public class NavigationActivity extends AppCompatActivity {
 //                    eInfo.get(e.getId()).street,
 //                    vInfo.get(g.getEdgeSource(e).toString()).name,
 //                    vInfo.get(g.getEdgeTarget(e).toString()).name);
+            System.out.println(message);
             i++;
         }
 
