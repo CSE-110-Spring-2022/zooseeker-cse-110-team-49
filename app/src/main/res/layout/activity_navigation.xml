@@ -24,7 +24,9 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
         android:hint="Navigation"
+        android:lineSpacingExtra="8sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/arrow" />
 
@@ -43,32 +45,40 @@
 
     <TextView
         android:id="@+id/from"
-        android:layout_width="100dp"
-        android:layout_height="31dp"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
+        android:fontFamily="@font/alata"
+        android:gravity="center"
         android:hint="From"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nav_title" />
 
     <TextView
         android:id="@+id/to"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/alata"
+        android:gravity="center"
         android:hint="To"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nav_title" />
 
     <TextView
         android:id="@+id/arrow"
-        android:layout_width="100dp"
+        android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="36dp"
         android:background="@drawable/arrow"
         app:layout_constraintEnd_toEndOf="@+id/nav_title"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/nav_title"
         app:layout_constraintTop_toBottomOf="@+id/nav_title" />
 
