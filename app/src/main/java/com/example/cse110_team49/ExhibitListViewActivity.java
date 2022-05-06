@@ -26,7 +26,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     private ExhibitListViewModel viewModel;
-
+    private String currentLocationID;
 
 
     @Override
@@ -35,7 +35,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exhibit_list_view);
 
         Bundle extras = getIntent().getExtras();
-        String currentLocationID = extras.getString("currentId");
+        currentLocationID = extras.getString("currentId");
 
         viewModel = new ViewModelProvider(this)
                 .get(ExhibitListViewModel.class);
@@ -86,6 +86,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
 
     public void onPlanRouteClicked(View view) {
         Intent intent=new Intent(this,PlanRouteActivity.class);
+        intent.putExtra("from", currentLocationID);
         startActivity(intent);
     }
 }
