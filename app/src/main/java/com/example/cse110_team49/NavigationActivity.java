@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -28,20 +29,17 @@ public class NavigationActivity extends AppCompatActivity {
         Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, currentLocation, destination);
 
+        TextView from = findViewById(R.id.from);
+        TextView to = findViewById(R.id.to);
+        TextView navigation = findViewById(R.id.nav);
+
+        from.setText(currentLocation);
+        to.setText(destination);
+
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-            String message = i + ". Walk on " + eInfo.get(e.getId()).street + g.getEdgeWeight(e) + " ft towards "  + vInfo.get(g.getEdgeTarget(e).toString()).name;
-
-//                    vInfo.get(g.getEdgeSource(e).toString()).name,
-//                    vInfo.get(g.getEdgeTarget(e).toString()).name);
-
-//            System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
-//                    i,
-//                    g.getEdgeWeight(e),
-//                    eInfo.get(e.getId()).street,
-//                    vInfo.get(g.getEdgeSource(e).toString()).name,
-//                    vInfo.get(g.getEdgeTarget(e).toString()).name);
-            System.out.println(message);
+            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + g.getEdgeWeight(e) + " ft towards "  + vInfo.get(g.getEdgeTarget(e).toString()).name + "\n";
+            navigation.setText(navigation.getText() + message);
             i++;
         }
 
