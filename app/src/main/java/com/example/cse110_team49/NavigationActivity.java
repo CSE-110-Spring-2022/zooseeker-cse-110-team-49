@@ -41,7 +41,7 @@ public class NavigationActivity extends AppCompatActivity {
 
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + g.getEdgeWeight(e) + " ft towards "  + vInfo.get(g.getEdgeTarget(e).toString()).name + "\n";
+            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft towards "  + vInfo.get(g.getEdgeTarget(e).toString()).name + "\n";
             navigation.setText(navigation.getText() + message);
             i++;
         }
