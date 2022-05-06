@@ -5,11 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,6 +78,31 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+        List<String> possible_list_AL = new ArrayList<String>();
+
+
+        vInfo.forEach((k, v) -> {
+            possible_list_AL.addAll(v.tags);
+        });
+
+        List<String> new_possible_list_AL = possible_list_AL.stream()
+                                                                .distinct()
+                                                                .collect(Collectors.toList());
+
+
+        String[] possible_list = new String[new_possible_list_AL.size()];
+
+        possible_list = new_possible_list_AL.toArray(possible_list);
+
+
+
+
+
+        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.searchInput);
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, possible_list);
+        textView.setAdapter(adapter);
+
 
 //        System.out.println(reversedVInfo);
 
