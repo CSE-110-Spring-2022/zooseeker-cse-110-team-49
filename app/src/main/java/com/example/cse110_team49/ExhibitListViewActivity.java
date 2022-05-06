@@ -77,4 +77,9 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     public void onGoBackClicked(View view) {
         finish();
     }
+
+    public void onPlanRouteClicked(View view) {
+        Intent intent=new Intent(this,PlanRouteActivity.class);
+        startActivity(intent);
+    }
 }
