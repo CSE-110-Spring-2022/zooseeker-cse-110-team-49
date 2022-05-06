@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.jgrapht.Graph;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,6 +26,9 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private ExhibitListViewModel viewModel;
 
+
+//    Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +36,9 @@ public class ExhibitListViewActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this)
                 .get(ExhibitListViewModel.class);
+
+
+        Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
 
 
         new Timer().scheduleAtFixedRate(new TimerTask(){
@@ -40,6 +50,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
 
 
         ExhibitAdapter adapter = new ExhibitAdapter();
+        adapter.loadGraph(g);
         adapter.setHasStableIds(true);
         adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         viewModel.getExhibits().observe(this, adapter::setExhibits);

@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         // "source" and "sink" are graph terms for the start and end
         String start = "entrance_exit_gate";
         String goal = "elephant_odyssey";
+
 
         // 1. Load the graph...
         Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this,"sample_zoo_graph.json");
@@ -99,11 +102,10 @@ public class MainActivity extends AppCompatActivity {
         textView.setAdapter(adapter);
 
 
-//        System.out.println(reversedVInfo);
-
         findViewById(R.id.myList).setOnClickListener(view -> {
             Intent intent = new Intent(this, ExhibitListViewActivity.class);
             startActivity(intent);
+
         });
 
 

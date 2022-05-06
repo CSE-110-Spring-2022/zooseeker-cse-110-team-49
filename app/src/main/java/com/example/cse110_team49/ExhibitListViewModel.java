@@ -41,11 +41,6 @@ public class ExhibitListViewModel extends AndroidViewModel {
 
     private void loadUsers() {
 
-/*        List<Exhibit> exhibitsUnsorted = exhibitDao.getAll();
-        for (Exhibit exhibit: exhibitsUnsorted) {
-            exhibitDao.delete(exhibit);
-        }*/
-
         exhibits = exhibitDao.getAllLive();
 
     }
