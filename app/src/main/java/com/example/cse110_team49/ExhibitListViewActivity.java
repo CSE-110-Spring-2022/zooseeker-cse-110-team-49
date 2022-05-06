@@ -42,7 +42,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         adapter.setHasStableIds(true);
         adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         adapter.setOnNavigateButtonClicked((exhibit) -> {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
             startActivity(intent);
         });
         viewModel.getExhibits().observe(this, adapter::setExhibits);
