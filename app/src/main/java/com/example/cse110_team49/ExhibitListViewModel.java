@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+
 import java.util.List;
 
 public class ExhibitListViewModel extends AndroidViewModel {
@@ -37,6 +40,8 @@ public class ExhibitListViewModel extends AndroidViewModel {
     }
 
     private void loadUsers() {
+
         exhibits = exhibitDao.getAllLive();
+
     }
 }
