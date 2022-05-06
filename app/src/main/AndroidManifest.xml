@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/Theme.CSE110Team49">
+        <activity
+            android:name=".NavigationActivity"
+            android:exported="false" />
         <activity
             android:name=".DisplaySearchResultsActivity"
             android:exported="true" />

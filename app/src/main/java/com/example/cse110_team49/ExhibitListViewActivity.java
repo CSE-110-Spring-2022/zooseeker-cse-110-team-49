@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
@@ -47,14 +48,15 @@ public class ExhibitListViewActivity extends AppCompatActivity {
                 initializeView();
             }
         },0,500);
-
-
         ExhibitAdapter adapter = new ExhibitAdapter();
         adapter.loadGraph(g);
         adapter.setHasStableIds(true);
         adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
+        adapter.setOnNavigateButtonClicked((exhibit) -> {
+            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+            startActivity(intent);
+        });
         viewModel.getExhibits().observe(this, adapter::setExhibits);
-
         recyclerView = findViewById(R.id.exhibits);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
