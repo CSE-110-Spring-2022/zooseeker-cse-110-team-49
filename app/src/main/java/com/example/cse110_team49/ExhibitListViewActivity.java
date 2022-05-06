@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ExhibitListView extends AppCompatActivity {
+public class ExhibitListViewActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     private ExhibitListViewModel viewModel;

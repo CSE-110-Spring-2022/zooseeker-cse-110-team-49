@@ -1,15 +1,9 @@
 package com.example.cse110_team49;
 
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-
 import static org.junit.Assert.assertEquals;
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
@@ -65,8 +59,8 @@ public class ZooActivityTest {
         List<Exhibit> exhibitList = exhibitDao.getAll();
 //        String newSearchedExhibit = "mammal";
 
-        ActivityScenario<ExhibitListView> scenario
-                = ActivityScenario.launch(ExhibitListView.class);
+        ActivityScenario<ExhibitListViewActivity> scenario
+                = ActivityScenario.launch(ExhibitListViewActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.moveToState(Lifecycle.State.STARTED);
         scenario.moveToState(Lifecycle.State.RESUMED);

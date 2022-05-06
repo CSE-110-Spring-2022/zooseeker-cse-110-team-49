@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 //        System.out.println(reversedVInfo);
 
         findViewById(R.id.myList).setOnClickListener(view -> {
-            Intent intent = new Intent(this, ExhibitListView.class);
+            Intent intent = new Intent(this, ExhibitListViewActivity.class);
             startActivity(intent);
         });
 
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setOnClicktoSearch(View view) {
-        Intent search_page = new Intent(this, DisplaySearchResults.class);
+        Intent search_page = new Intent(this, DisplaySearchResultsActivity.class);
         TextView search_input = findViewById(R.id.searchInput);
 
         search_page.putExtra("input", search_input.getText().toString());
