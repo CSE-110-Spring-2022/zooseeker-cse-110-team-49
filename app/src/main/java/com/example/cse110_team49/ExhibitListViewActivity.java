@@ -35,6 +35,9 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibit_list_view);
 
+        Bundle extras = getIntent().getExtras();
+        String currentLocationID = extras.getString("currentId");
+
         viewModel = new ViewModelProvider(this)
                 .get(ExhibitListViewModel.class);
 
@@ -50,6 +53,8 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         },0,500);
         ExhibitAdapter adapter = new ExhibitAdapter();
         adapter.loadGraph(g);
+        adapter.loadCurrentLocation(currentLocationID);
+
         adapter.setHasStableIds(true);
         adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         adapter.setOnNavigateButtonClicked((exhibit) -> {

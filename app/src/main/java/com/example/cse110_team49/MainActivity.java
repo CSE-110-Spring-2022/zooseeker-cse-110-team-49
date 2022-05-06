@@ -28,6 +28,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -127,12 +128,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.searchInput);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, possible_list);
         textView.setAdapter(adapter);
 
         findViewById(R.id.myList).setOnClickListener(view -> {
+            String currentL = currentLocation.getText().toString();
+            String id = "entrance_exit_gate";
+            for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+                String key = entry.getKey();
+                ZooDataItem.VertexInfo value = entry.getValue();
+                if (value.name == currentL) {
+                    id = key;
+                }
+            }
             Intent intent = new Intent(this, ExhibitListViewActivity.class);
+            intent.putExtra("currentId", id);
             startActivity(intent);
 
         });
