@@ -46,10 +46,10 @@
     <TextView
         android:id="@+id/from"
         android:layout_width="130dp"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
-        android:fontFamily="casual"
+        android:fontFamily="@font/alata"
         android:gravity="center"
         android:hint="From"
         android:textSize="16sp"
@@ -60,10 +60,10 @@
     <TextView
         android:id="@+id/to"
         android:layout_width="130dp"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="casual"
+        android:fontFamily="@font/alata"
         android:gravity="center"
         android:hint="To"
         android:textSize="16sp"
@@ -73,12 +73,12 @@
 
     <TextView
         android:id="@+id/arrow"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="36dp"
         android:background="@drawable/arrow"
         app:layout_constraintEnd_toEndOf="@+id/nav_title"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/nav_title"
         app:layout_constraintTop_toBottomOf="@+id/nav_title" />
 
