@@ -23,13 +23,17 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
 
     private List<Exhibit> exhibits = Collections.emptyList();
     private Consumer<Exhibit> onDeleteButtonClicked;
+    private String currentLocationID;
 
-    Graph<String, IdentifiedWeightedEdge> g;
+    private Graph<String, IdentifiedWeightedEdge> g;
     public void loadGraph(Graph<String, IdentifiedWeightedEdge> g) {
         this.g = g;
     }
     private Consumer<Exhibit> onNavigateButtonClicked;
 
+    public void loadCurrentLocation(String currentLocationID){
+        this.currentLocationID = currentLocationID;
+    }
 
     public void setExhibits(List<Exhibit> newExhibits) {
         this.exhibits.clear();
@@ -93,7 +97,7 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
         public void setTodoItem(Exhibit exhibit) {
             this.exhibit = exhibit;
             DijkstraShortestPath d = new DijkstraShortestPath(g);
-            double weight = d.getPathWeight("entrance_exit_gate", exhibit.getItemId());
+            double weight = d.getPathWeight(currentLocationID, exhibit.getItemId());
             this.navigation.setText("navigate\n" + String.valueOf((int)weight) + "m");
 
             this.textView.setText(exhibit.getName());
