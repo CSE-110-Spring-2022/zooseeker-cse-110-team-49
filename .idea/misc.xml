@@ -3,18 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Elanc/Desktop/UCSD/spring 2022/CSE 110/Project/zooseeker-cse-110-team-49/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/Elanc/Desktop/UCSD/spring 2022/CSE 110/Project/zooseeker-cse-110-team-49/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2495" />
+        <entry key="../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/Junwei/Documents/GitHub/zooseeker-cse-110-team-49/app/src/main/res/layout/activity_display_search_results.xml" value="0.2859375" />
         <entry key="..\:/Users/Junwei/Documents/GitHub/zooseeker-cse-110-team-49/app/src/main/res/layout/activity_exhibit_list_view.xml" value="0.25769927536231885" />
         <entry key="..\:/Users/Junwei/Documents/GitHub/zooseeker-cse-110-team-49/app/src/main/res/layout/activity_main.xml" value="0.2604166666666667" />
-        <entry key="..\:/Users/shli_/OneDrive/Desktop/zooseeker-cse-110-team-49/app/src/main/res/layout/activity_exhibit_list_view.xml" value="0.13360507246376813" />
-        <entry key="app/src/main/res/layout/activity_display_search_results.xml" value="0.2544189453125" />
+        <entry key="app/src/main/res/layout/activity_direction.xml" value="0.22282608695652173" />
+        <entry key="app/src/main/res/layout/activity_display_search_results.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_exhibit_list_view.xml" value="0.2578933715820313" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17798913043478262" />
+        <entry key="app/src/main/res/layout/activity_navigation.xml" value="0.15572916666666667" />
         <entry key="app/src/main/res/layout/animal_list_item.xml" value="0.18568572998046876" />
-        <entry key="app/src/main/res/layout/exhibit.xml" value="0.19486694335937502" />
-        <entry key="app/src/main/res/layout/search_location_spinner.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/exhibit.xml" value="0.3263823799465013" />
       </map>
     </option>
   </component>

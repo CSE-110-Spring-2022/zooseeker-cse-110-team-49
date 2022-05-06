@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSE110Team49">
         <activity
+            android:name=".PlanRouteActivity"
+            android:exported="false" />
+        <activity
             android:name=".NavigationActivity"
             android:exported="false" />
         <activity
