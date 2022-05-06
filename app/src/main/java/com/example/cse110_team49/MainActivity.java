@@ -34,25 +34,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // "source" and "sink" are graph terms for the start and end
-//        String start = "entrance_exit_gate";
-//        String goal = "elephant_odyssey";
-
-
-
-        // 1. Load the graph...
-//        Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON("sample_zoo_graph.json");
-//        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
-
-        // 2. Load the information about our nodes and edges...
-//        try {
-//            System.out.println("Hello");
-//            Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-//            System.out.println(vInfo);
-//        } catch (Exception e){
-//            System.out.println("exception");
-//        }
-
         Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
         Map<String, ArrayList<String>>  reversedVInfo = new HashMap<>();
         for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()){
@@ -83,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
                     reversedVInfo.put(nameValue, s);
                 }
             }
-
-
         }
         List<String> possible_list_AL = new ArrayList<String>();
         List<String> nodeNameList = new ArrayList<String>();
@@ -102,47 +81,29 @@ public class MainActivity extends AppCompatActivity {
         // all possible location
         possible_list = new_possible_list_AL.toArray(possible_list);
 
+        // dropdown menu
         currentLocation = findViewById(R.id.setCurrentLocation);
-
         currentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Initialize dialog
                dialog = new Dialog(MainActivity.this);
-
-               // set custom dialog
                dialog.setContentView(R.layout.search_location_spinner);
-
-               // set custom height and width
                dialog.getWindow().setLayout(650, 800);
-
-               // set transparent background
                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-               // change here !!!!!!
                ArrayAdapter<String> adapter_curLocation = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, nodeNameList);
-               // show dialog
                dialog.show();
-
-
-               // Initialize and assign variable
                EditText editText = dialog.findViewById(R.id.edit_text);
                ListView listView = dialog.findViewById(R.id.list_view);
-
-
-               // set adapter
                listView.setAdapter(adapter_curLocation);
                editText.addTextChangedListener(new TextWatcher() {
                    @Override
                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                    }
-
                    @Override
                    public void onTextChanged(CharSequence s, int start, int before, int count) {
                        adapter_curLocation.getFilter().filter(s);
                    }
-
                    @Override
                    public void afterTextChanged(Editable s) {
 
@@ -151,11 +112,7 @@ public class MainActivity extends AppCompatActivity {
                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                    @Override
                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                       // when item selected from list
-                       // set selected item on textView
                        currentLocation.setText(adapter_curLocation.getItem(position));
-
-                       // Dismiss dialog
                        dialog.dismiss();
                    }
                });
@@ -171,25 +128,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ExhibitListViewActivity.class);
             startActivity(intent);
         });
-
-
-
-//        Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON("sample_edge_info.json");
-
-//        System.out.printf("The shortest path from '%s' to '%s' is:\n", start, goal);
-
-//        int i = 1;
-//        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-//            System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
-//                    i,
-//                    g.getEdgeWeight(e),
-//                    eInfo.get(e.getId()).street,
-//                    vInfo.get(g.getEdgeSource(e).toString()).name,
-//                    vInfo.get(g.getEdgeTarget(e).toString()).name);
-//            i++;
-//        }
-
-
     }
 
     public void setOnClicktoSearch(View view) {
