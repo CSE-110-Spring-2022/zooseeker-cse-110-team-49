@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+
 import java.util.List;
 
 public class ExhibitListViewModel extends AndroidViewModel {
@@ -37,6 +40,16 @@ public class ExhibitListViewModel extends AndroidViewModel {
     }
 
     private void loadUsers() {
+
+        List<Exhibit> exhibitsUnsorted = exhibitDao.getAll();
+        for (Exhibit exhibit: exhibitsUnsorted) {
+            exhibitDao.delete(exhibit);
+        }
+        String start = "entrance_exit_gate";
+        String goal = animalItem.name;
+
+        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
         exhibits = exhibitDao.getAllLive();
+
     }
 }
