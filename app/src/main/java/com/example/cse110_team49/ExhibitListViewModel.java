@@ -41,14 +41,11 @@ public class ExhibitListViewModel extends AndroidViewModel {
 
     private void loadUsers() {
 
-        List<Exhibit> exhibitsUnsorted = exhibitDao.getAll();
+/*        List<Exhibit> exhibitsUnsorted = exhibitDao.getAll();
         for (Exhibit exhibit: exhibitsUnsorted) {
             exhibitDao.delete(exhibit);
-        }
-        String start = "entrance_exit_gate";
-        String goal = animalItem.name;
+        }*/
 
-        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
         exhibits = exhibitDao.getAllLive();
 
     }

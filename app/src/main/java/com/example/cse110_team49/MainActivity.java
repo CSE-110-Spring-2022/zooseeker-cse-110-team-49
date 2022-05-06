@@ -31,12 +31,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // "source" and "sink" are graph terms for the start and end
-
-        Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this,"sample_zoo_graph.json");
-
-
+        String start = "entrance_exit_gate";
+        String goal = "elephant_odyssey";
 
         // 1. Load the graph...
+        Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this,"sample_zoo_graph.json");
+        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
 
         // 2. Load the information about our nodes and edges...
 
@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                     vInfo.get(g.getEdgeTarget(e).toString()).name);
             i++;
         }
-
 
     }
 
