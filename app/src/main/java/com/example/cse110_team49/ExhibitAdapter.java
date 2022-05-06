@@ -84,8 +84,8 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
         public void setTodoItem(Exhibit exhibit) {
             this.exhibit = exhibit;
             DijkstraShortestPath d = new DijkstraShortestPath(g);
-            double weight = d.getPathWeight("entrance_exit_gate", exhibit.getName());
-            this.navigation.setText("navigate     " + String.valueOf(weight) + "m");
+            double weight = d.getPathWeight("entrance_exit_gate", exhibit.getItemId());
+            this.navigation.setText("navigate\n" + String.valueOf((int)weight) + "m");
 
             this.textView.setText(exhibit.getName());
         }
