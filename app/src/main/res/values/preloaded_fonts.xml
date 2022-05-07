@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/abril_fatface</item>
+        <item>@font/alata</item>
+        <item>@font/arbutus</item>
+        <item>@font/baloo</item>
+    </array>
+</resources>

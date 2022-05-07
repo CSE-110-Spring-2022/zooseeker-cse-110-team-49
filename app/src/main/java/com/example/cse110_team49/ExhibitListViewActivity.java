@@ -26,9 +26,8 @@ public class ExhibitListViewActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     private ExhibitListViewModel viewModel;
+    private String currentLocationID;
 
-
-//    Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exhibit_list_view);
 
         Bundle extras = getIntent().getExtras();
-        String currentLocationID = extras.getString("currentId");
+        currentLocationID = extras.getString("currentId");
 
         viewModel = new ViewModelProvider(this)
                 .get(ExhibitListViewModel.class);
@@ -59,6 +58,8 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         adapter.setOnNavigateButtonClicked((exhibit) -> {
             Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+            intent.putExtra("destination", exhibit.getItemId());
+            intent.putExtra("from", currentLocationID);
             startActivity(intent);
         });
         viewModel.getExhibits().observe(this, adapter::setExhibits);
@@ -85,6 +86,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
 
     public void onPlanRouteClicked(View view) {
         Intent intent=new Intent(this,PlanRouteActivity.class);
+        intent.putExtra("from", currentLocationID);
         startActivity(intent);
     }
 }
