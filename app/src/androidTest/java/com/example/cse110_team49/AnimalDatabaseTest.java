@@ -41,9 +41,6 @@ public class AnimalDatabaseTest {
         long id2 = dao.insert(item2);
 
         assertNotEquals(id1, id2);
-
-//        dao.delete(item1);
-//        dao.delete(item2);
     }
 
     @Test
