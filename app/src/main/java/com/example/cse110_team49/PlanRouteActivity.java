@@ -3,6 +3,7 @@ package com.example.cse110_team49;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,8 +16,9 @@ import java.util.Map;
 
 public class PlanRouteActivity extends AppCompatActivity {
 
+    String closestExhibitId;
     Exhibit closestExhibit;
-    Boolean flag = true;
+    Boolean flag;
 
 
     @Override
@@ -27,15 +29,35 @@ public class PlanRouteActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String currentLocationID;
 
-        System.out.println(flag);
+//        System.out.println(extras.getString("from"));
 
-        if (flag) {
-            currentLocationID = extras.getString("from");
+        SharedPreferences storage = getSharedPreferences("Storage", 0);
+        flag = storage.getBoolean("flag", false);
+        if (!flag){
+            closestExhibitId = extras.getString("from");
+            flag = true;
+        }
+        else {
+            closestExhibitId = storage.getString("closestExhibit", "");
+        }
 
-        }
-        else{
-            currentLocationID = closestExhibit.getItemId();
-        }
+//        System.out.println(closestExhibitId);
+//        flag = storage.getBoolean("flag", true);
+
+
+
+
+
+
+//        System.out.println(flag);
+
+//        if (flag) {
+//            currentLocationID = extras.getString("from");
+//            flag = false;
+//        }
+//        else{
+        currentLocationID = closestExhibitId;
+//        }
 
         Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
         Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
@@ -65,7 +87,7 @@ public class PlanRouteActivity extends AppCompatActivity {
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
             String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft towards "  + vInfo.get(g.getEdgeTarget(e).toString()).name;
             i++;
-//            System.out.println(message);
+            System.out.println(message);
         }
 
 
@@ -76,7 +98,13 @@ public class PlanRouteActivity extends AppCompatActivity {
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
         ExhibitDao exhibitDao = db.exhibitDao();
 
-        flag = false;
+        String closestExhibitId = closestExhibit.getItemId();
+
+        SharedPreferences storage = getSharedPreferences("Storage",0);
+        SharedPreferences.Editor edit = storage.edit();
+        edit.putString("closestExhibit", closestExhibitId);
+        edit.putBoolean("flag", flag);
+        edit.commit();
         exhibitDao.delete(closestExhibit);
         recreate();
     }
