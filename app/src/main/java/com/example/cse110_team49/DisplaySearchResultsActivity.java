@@ -71,7 +71,7 @@ public class DisplaySearchResultsActivity extends AppCompatActivity {
 
         if (!reversedVInfo.containsKey(input)) {
 //            Utilities.showAlert(this, "Sorry we don't have this animal, please go back and try another!");
-            Utils.alertDialogShow(DisplaySearchResultsActivity.this,"Sorry we don't have this animal");
+            Utils.alertDialogShow(this,"Sorry we don't have this animal");
         }
         else {
             ArrayList<String> idList = reversedVInfo.get(input);
