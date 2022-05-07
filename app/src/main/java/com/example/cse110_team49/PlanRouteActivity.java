@@ -143,6 +143,16 @@ public class PlanRouteActivity extends AppCompatActivity {
                 }
             }
         }
+
+
+        TextView from = findViewById(R.id.plan_from);
+        TextView to = findViewById(R.id.plan_to);
+        TextView navigation = findViewById(R.id.plan_nav);
+
+        from.setText(vInfo.get(lastClosestExhibitId).name);
+        to.setText(closestExhibit.getName());
+
+
         TextView nextView = findViewById(R.id.nextStop);
         if (nextClosestExhibit != null) {
             nextView.setText("Your closest next stop is: "+nextClosestExhibit.getName());
