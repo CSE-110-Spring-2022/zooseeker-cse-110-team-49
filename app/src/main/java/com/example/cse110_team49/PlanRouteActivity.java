@@ -2,6 +2,7 @@ package com.example.cse110_team49;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,41 +37,36 @@ public class PlanRouteActivity extends AppCompatActivity {
         ExhibitDao exhibitDao = db.exhibitDao();
         List<Exhibit> exhibits = exhibitDao.getAll();
 
-        System.out.println(exhibits.size());
+        System.out.println(exhibits.size() == 0);
+
+
 
         if (exhibits.size() == 0){
-            Utils.alertDialogShow(PlanRouteActivity.this,"You need to add an animal before planning");
+            Utils.alertDialogShow(this,"You need to add an animal before planning");
         }
 
-        Bundle extras = getIntent().getExtras();
-        String currentLocationID = extras.getString("from");
+        else{
+            Bundle extras = getIntent().getExtras();
+            String currentLocationID = extras.getString("from");
 
-        vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-        eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
-
-
-
+            vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+            eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
 
 
-        g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
+            g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
 
 
 
 
-        new Timer().scheduleAtFixedRate(new TimerTask(){
-            @Override
-            public void run(){
-                initializeView();
-            }
-        },0,500);
-
-        vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-        eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
-        g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(), "sample_zoo_graph.json");
+            vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+            eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+            g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(), "sample_zoo_graph.json");
 
 
+            update(currentLocationID);
+        }
 
-        update(currentLocationID);
+
     }
 
 
