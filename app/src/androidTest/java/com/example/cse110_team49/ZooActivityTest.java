@@ -55,10 +55,7 @@ public class ZooActivityTest {
 
     @Test
     public void testExhibitCount() {
-
         List<Exhibit> exhibitList = exhibitDao.getAll();
-//        String newSearchedExhibit = "mammal";
-
         ActivityScenario<ExhibitListViewActivity> scenario
                 = ActivityScenario.launch(ExhibitListViewActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
@@ -66,13 +63,6 @@ public class ZooActivityTest {
         scenario.moveToState(Lifecycle.State.RESUMED);
 
         scenario.onActivity(activity -> {
-//            List<Exhibit> exhibitList = exhibitDao.getAll();
-
-//            EditText searchBar = activity.findViewById(R.id.searchInput);
-//            Button searchButton = activity.findViewById(R.id.searchButton);
-//
-//            searchBar.setText(newSearchedExhibit);
-//            searchButton.performClick();
             TextView countView = activity.findViewById(R.id.count);
             int count = Integer.parseInt(countView.getText().toString().split(":")[1]);
             assertEquals(exhibitList.size(), count);
