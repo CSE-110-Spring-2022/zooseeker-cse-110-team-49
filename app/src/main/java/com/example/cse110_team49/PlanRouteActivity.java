@@ -71,40 +71,14 @@ public class PlanRouteActivity extends AppCompatActivity {
 
 
     public void clear(){
-
+        TextView navigation = findViewById(R.id.plan_nav);
+        navigation.setText("You've already arrived at your destination!");
     }
 
-    public void display(String currentLocationId, GraphPath<String, IdentifiedWeightedEdge> path){
-
-        int i = 1;
-        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-            ZooDataItem.VertexInfo vnear;
-            ZooDataItem.VertexInfo vfar;
-            ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
-            ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
-            GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, currentLocationId, v1.id);
-            GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, currentLocationId, v2.id);
-            double dist1 = route1.getWeight();
-            double dist2 = route2.getWeight();
-
-            if(dist1 < dist2) {
-                vnear = v1;
-                vfar  = v2;
-            }
-            else{
-                vnear = v2;
-                vfar  = v1;
-            }
-
-            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft from " + vnear.name + " to "  + vfar.name + "\n";
-            System.out.println(message);
-            i++;
-        }
-    }
 
     public void update(String lastClosestExhibitId) {
 
-
+        initializeView();
         Context context = getApplicationContext();
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
         ExhibitDao exhibitDao = db.exhibitDao();
@@ -149,6 +123,8 @@ public class PlanRouteActivity extends AppCompatActivity {
         to.setText(closestExhibit.getName());
 
 
+
+
         TextView nextView = findViewById(R.id.nextStop);
         if (nextClosestExhibit != null) {
             nextView.setText("Your closest next stop is: "+nextClosestExhibit.getName());
@@ -162,7 +138,38 @@ public class PlanRouteActivity extends AppCompatActivity {
 
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, closestExhibit.getItemId());
 
-        display(lastClosestExhibitId, path);
+
+
+        int i = 1;
+        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+            ZooDataItem.VertexInfo vnear;
+            ZooDataItem.VertexInfo vfar;
+            ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
+            ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
+            GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v1.id);
+            GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v2.id);
+            double dist1 = route1.getWeight();
+            double dist2 = route2.getWeight();
+
+            if(dist1 < dist2) {
+                vnear = v1;
+                vfar  = v2;
+            }
+            else{
+                vnear = v2;
+                vfar  = v1;
+            }
+
+            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft from " + vnear.name + " to "  + vfar.name + "\n";
+            String currentMessage = navigation.getText().toString();
+            if (currentMessage.equals("You've already arrived at your destination!")){
+                currentMessage = "";
+            }
+            navigation.setText(currentMessage + message);
+
+            i++;
+        }
+
 
 
     }

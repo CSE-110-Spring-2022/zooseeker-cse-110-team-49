@@ -61,7 +61,7 @@ public class NavigationActivity extends AppCompatActivity {
 
             String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft from " + vnear.name + " to "  + vfar.name + "\n";
             String currentMessage = navigation.getText().toString();
-            if (currentMessage == "You've already arrived at your destination!"){
+            if (currentMessage.equals("You've already arrived at your destination!")){
                 currentMessage = "";
             }
             navigation.setText(currentMessage + message);
