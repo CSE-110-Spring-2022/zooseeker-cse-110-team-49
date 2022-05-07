@@ -6,6 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".PlanRouteActivity">
 
+    <TextView
+        android:id="@+id/num_remaining"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="572dp"
+        android:layout_marginEnd="112dp"
+        android:gravity="center_vertical"
+        android:text=" "
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nextStop"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="516dp"
+        android:layout_marginEnd="116dp"
+        android:gravity="center_vertical"
+        android:text=" "
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -43,8 +67,8 @@
         android:id="@+id/next_in_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="166dp"
-        android:layout_marginBottom="119dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="108dp"
         android:onClick="onNextClicked"
         android:text="NEXT"
         app:layout_constraintBottom_toBottomOf="parent"
