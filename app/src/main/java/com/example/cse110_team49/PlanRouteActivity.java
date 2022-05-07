@@ -19,48 +19,120 @@ import java.util.TimerTask;
 
 public class PlanRouteActivity extends AppCompatActivity {
 
-    String closestExhibitId;
-    Exhibit closestExhibit;
-    Boolean flag;
 
+    Exhibit closestExhibit;
+
+    Map<String, ZooDataItem.VertexInfo> vInfo;
+    Map<String, ZooDataItem.EdgeInfo> eInfo;
+    Graph<String, IdentifiedWeightedEdge> g;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_route);
 
+        Context context = getApplicationContext();
+        ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
+        ExhibitDao exhibitDao = db.exhibitDao();
+        List<Exhibit> exhibits = exhibitDao.getAll();
+
+        System.out.println(exhibits.size());
+
+        if (exhibits.size() == 0){
+            Utils.alertDialogShow(PlanRouteActivity.this,"You need to add an animal before planning");
+        }
+
         Bundle extras = getIntent().getExtras();
         String currentLocationID = extras.getString("from");
 
-        Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-        Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+        vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+        eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+
+
+
+
+
+        g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
+
+
+
+
+        new Timer().scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                initializeView();
+            }
+        },0,500);
+
+        vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+        eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+        g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(), "sample_zoo_graph.json");
+
+
+
+        update(currentLocationID);
+    }
+
+
+    public void clear(){
+
+    }
+
+    public void display(String currentLocationId, GraphPath<String, IdentifiedWeightedEdge> path){
+
+        int i = 1;
+        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+            ZooDataItem.VertexInfo vnear;
+            ZooDataItem.VertexInfo vfar;
+            ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
+            ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
+            GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, currentLocationId, v1.id);
+            GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, currentLocationId, v2.id);
+            double dist1 = route1.getWeight();
+            double dist2 = route2.getWeight();
+
+            if(dist1 < dist2) {
+                vnear = v1;
+                vfar  = v2;
+            }
+            else{
+                vnear = v2;
+                vfar  = v1;
+            }
+
+            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft from " + vnear.name + " to "  + vfar.name + "\n";
+            System.out.println(message);
+            i++;
+        }
+    }
+
+    public void update(String lastClosestExhibitId) {
+
 
         Context context = getApplicationContext();
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
         ExhibitDao exhibitDao = db.exhibitDao();
         List<Exhibit> exhibits = exhibitDao.getAll();
 
-        Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
 
         double minDist = Double.POSITIVE_INFINITY;
+
         double nextMinDist = Double.POSITIVE_INFINITY;
         Exhibit nextClosestExhibit=null;
-        Exhibit closestExhibit=null;
 
-        for (Exhibit exhibit: exhibits) {
-            if(exhibit.getItemId().equals("Entrance and Exit Gate") || exhibit.getItemId().equals(currentLocationID)){
-                continue;
-            }
+
+        for (Exhibit exhibit : exhibits) {
             DijkstraShortestPath d = new DijkstraShortestPath(g);
-            double weight = d.getPathWeight(currentLocationID, exhibit.getItemId());
-            if (weight < minDist){
+            double weight = d.getPathWeight(lastClosestExhibitId, exhibit.getItemId());
+            if (weight < minDist) {
                 minDist = weight;
                 closestExhibit = exhibit;
             }
         }
+
         if (closestExhibit != null) {
             for (Exhibit exhibit: exhibits) {
-                if(exhibit.getItemId().equals(currentLocationID) || exhibit.getItemId().equals(closestExhibit.getItemId())){
+                if(exhibit.getItemId().equals(lastClosestExhibitId) || exhibit.getItemId().equals(closestExhibit.getItemId())){
                     continue;
                 }
                 DijkstraShortestPath d = new DijkstraShortestPath(g);
@@ -75,69 +147,16 @@ public class PlanRouteActivity extends AppCompatActivity {
         if (nextClosestExhibit != null) {
             nextView.setText("Your closest next stop is: "+nextClosestExhibit.getName());
         }
-        else{
+        else if (exhibits.size() == 1){
             nextView.setText("Your are almost done your visit");
         }
-        String message="";
-        if(closestExhibit!=null){
-            GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, currentLocationID, closestExhibit.getItemId());
-            int i = 1;
-            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-                message = i + ". Walk on " + eInfo.get(e.getId()).street + g.getEdgeWeight(e) + " ft towards "  + vInfo.get(g.getEdgeTarget(e).toString()).name;
-                i++;
-            }
-        }
-        System.out.println(message);
-
-
-        new Timer().scheduleAtFixedRate(new TimerTask(){
-            @Override
-            public void run(){
-                initializeView();
-            }
-        },0,500);
-
-//        System.out.println(extras.getString("from"));
-
-        SharedPreferences storage = getSharedPreferences("Storage", 0);
-        flag = storage.getBoolean("flag", false);
-        if (!flag){
-            closestExhibitId = extras.getString("from");
-            flag = true;
-        }
-        else {
-            closestExhibitId = storage.getString("closestExhibit", "");
+        else{
+            nextView.setText("You have finished your plan!");
         }
 
-//        System.out.println(closestExhibitId);
-//        flag = storage.getBoolean("flag", true);
+        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, closestExhibit.getItemId());
 
-
-
-
-
-
-//        System.out.println(flag);
-
-//        if (flag) {
-//            currentLocationID = extras.getString("from");
-//            flag = false;
-//        }
-//        else{
-        currentLocationID = closestExhibitId;
-//        }
-
-
-
-        for (Exhibit exhibit: exhibits) {
-            DijkstraShortestPath d = new DijkstraShortestPath(g);
-            double weight = d.getPathWeight(currentLocationID, exhibit.getItemId());
-            if (weight < minDist){
-                minDist = weight;
-                closestExhibit = exhibit;
-            }
-        }
-
+        display(lastClosestExhibitId, path);
 
 
     }
@@ -151,11 +170,11 @@ public class PlanRouteActivity extends AppCompatActivity {
         if (exhibitDao.getAll() != null) {
             theCount = exhibitDao.getAll().size();
         }
-        if(theCount>1){
-            countView.setText(String.valueOf(theCount)+" unvisited exhibitions remaining");
+        if(theCount>2){
+            countView.setText(String.valueOf(theCount - 1)+" unvisited exhibitions remaining");
         }
-        else if(theCount==1){
-            countView.setText(String.valueOf(theCount)+" unvisited exhibition remaining");
+        else if(theCount == 1 || theCount == 2){
+            countView.setText(String.valueOf(theCount - 1)+" unvisited exhibition remaining");
         }
         else{
             countView.setText("You have no unvisited exhibition remaining");
@@ -170,14 +189,13 @@ public class PlanRouteActivity extends AppCompatActivity {
 
         String closestExhibitId = closestExhibit.getItemId();
 
-        SharedPreferences storage = getSharedPreferences("Storage",0);
-        SharedPreferences.Editor edit = storage.edit();
-        edit.putString("closestExhibit", closestExhibitId);
-        edit.putBoolean("flag", flag);
-        edit.commit();
         exhibitDao.delete(closestExhibit);
-        recreate();
+        clear();
+
+        update(closestExhibitId);
+
     }
+
 
 
     public void onGoBackClicked(View view) {

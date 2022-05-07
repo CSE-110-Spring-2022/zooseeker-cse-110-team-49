@@ -41,7 +41,25 @@ public class NavigationActivity extends AppCompatActivity {
 
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft towards "  + vInfo.get(g.getEdgeTarget(e).toString()).name + "\n";
+            ZooDataItem.VertexInfo vnear;
+            ZooDataItem.VertexInfo vfar;
+            ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
+            ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
+            GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, currentLocation, v1.id);
+            GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, currentLocation, v2.id);
+            double dist1 = route1.getWeight();
+            double dist2 = route2.getWeight();
+
+            if(dist1 < dist2) {
+                vnear = v1;
+                vfar  = v2;
+            }
+            else{
+                vnear = v2;
+                vfar  = v1;
+            }
+
+            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft from " + vnear.name + " to "  + vfar.name + "\n";
             navigation.setText(navigation.getText() + message);
             i++;
         }
