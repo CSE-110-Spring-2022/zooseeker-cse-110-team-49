@@ -55,14 +55,14 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         adapter.loadCurrentLocation(currentLocationID);
 
         adapter.setHasStableIds(true);
-        adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
+        //adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         adapter.setOnNavigateButtonClicked((exhibit) -> {
             Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
             intent.putExtra("destination", exhibit.getItemId());
             intent.putExtra("from", currentLocationID);
             ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
             ExhibitDao exhibitDao = db.exhibitDao();
-            exhibitDao.delete(exhibit);
+            //exhibitDao.delete(exhibit);
             startActivityForResult(intent, 2);
         });
         viewModel.getExhibits().observe(this, adapter::setExhibits);
@@ -96,14 +96,10 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             adapter.loadGraph(g);
             adapter.loadCurrentLocation(currentLocationID);
             adapter.setHasStableIds(true);
-            adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
             adapter.setOnNavigateButtonClicked((exhibit) -> {
                 Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
                 intent.putExtra("destination", exhibit.getItemId());
                 intent.putExtra("from", currentLocationID);
-                ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
-                ExhibitDao exhibitDao = db.exhibitDao();
-                exhibitDao.delete(exhibit);
                 startActivityForResult(intent, 2);
             });
             viewModel.getExhibits().observe(this, adapter::setExhibits);
