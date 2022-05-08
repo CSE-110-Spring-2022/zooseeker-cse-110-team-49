@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             possible_list_AL.addAll(v.tags);
             nodeNameList.add(v.name);
         });
+
         //-----------
         int index=-1;
         for(int i=0;i<nodeNameList.size();i++){
@@ -94,8 +95,9 @@ public class MainActivity extends AppCompatActivity {
             nodeNameList.set(0, "Entrance and Exit Gate");
             nodeNameList.add(first_elem);
         }
-        //-----------
 
+
+        //-----------
         // search list
         List<String> new_possible_list_AL = possible_list_AL.stream().distinct().collect(Collectors.toList());
         String[] possible_list = new String[new_possible_list_AL.size()];
@@ -106,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
 
         // dropdown menu
         currentLocation = findViewById(R.id.setCurrentLocation);
+        //-----------
+        //currentLocation.setText("Entrance and Exit Gate");
+        //-----------
         currentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

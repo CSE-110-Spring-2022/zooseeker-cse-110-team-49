@@ -74,7 +74,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".MainActivity">
 
-        <!-- text view to show the selected item-->
+        <!--text view to show the selected item-->
         <TextView
             android:id="@+id/setCurrentLocation"
             android:layout_width="360dp"

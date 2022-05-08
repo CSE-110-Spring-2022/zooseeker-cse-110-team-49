@@ -60,14 +60,23 @@ public class PlanRouteActivity extends AppCompatActivity {
 
             //--------------
             String first_cl_id=getIntent().getExtras().getString("from");
-            String first_cl_name ="Entrance and Exit Gate";
+            String first_cl_name = null;
             for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
                 String cur_id = entry.getKey();
                 if (cur_id.equals(first_cl_id)) {
                     first_cl_name=entry.getValue().name;
+                    break;
                 }
             }
-            exhibitDao.delete(exhibitDao.get(first_cl_name));
+            if(first_cl_name != null) {
+                for(Exhibit exhibit: exhibits){
+                    if(exhibit.getName().equals(first_cl_name)){
+                        exhibitDao.delete(exhibitDao.get(first_cl_name));
+                        break;
+                    }
+                }
+
+            }
             //--------------
 
             g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
