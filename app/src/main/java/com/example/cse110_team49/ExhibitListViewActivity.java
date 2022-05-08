@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import org.jgrapht.Graph;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +28,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private ExhibitListViewModel viewModel;
     private String currentLocationID;
+    Map<String, ZooDataItem.VertexInfo> vInfo;
 
 
     @Override
@@ -41,6 +43,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
                 .get(ExhibitListViewModel.class);
 
         Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
+        vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
 
 
         new Timer().scheduleAtFixedRate(new TimerTask(){
@@ -55,20 +58,31 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         adapter.loadCurrentLocation(currentLocationID);
 
         adapter.setHasStableIds(true);
-        //adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
         adapter.setOnNavigateButtonClicked((exhibit) -> {
             Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
             intent.putExtra("destination", exhibit.getItemId());
             intent.putExtra("from", currentLocationID);
             ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
             ExhibitDao exhibitDao = db.exhibitDao();
-            //exhibitDao.delete(exhibit);
             startActivityForResult(intent, 2);
         });
         viewModel.getExhibits().observe(this, adapter::setExhibits);
         recyclerView = findViewById(R.id.exhibits);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        //------------
+        String first_cl_id=currentLocationID;
+        String first_cl_name=null;
+        for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+            String cur_id = entry.getKey();
+            if (cur_id.equals(first_cl_id)) {
+                first_cl_name=entry.getValue().name;
+            }
+        }
+        TextView cur_location = findViewById(R.id.cur_location);
+        cur_location.setText("Current location:\n"+first_cl_name);
+        //------------
     }
 
     @Override
@@ -106,6 +120,19 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             recyclerView = findViewById(R.id.exhibits);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(adapter);
+
+            //------------
+            String first_cl_id=currentLocationID;
+            String first_cl_name=null;
+            for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+                String cur_id = entry.getKey();
+                if (cur_id.equals(first_cl_id)) {
+                    first_cl_name=entry.getValue().name;
+                }
+            }
+            TextView cur_location = findViewById(R.id.cur_location);
+            cur_location.setText("Current location:\n"+first_cl_name);
+            //------------
         }
     }
 

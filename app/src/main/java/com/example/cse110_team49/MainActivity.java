@@ -80,6 +80,21 @@ public class MainActivity extends AppCompatActivity {
             possible_list_AL.addAll(v.tags);
             nodeNameList.add(v.name);
         });
+        //-----------
+        int index=-1;
+        for(int i=0;i<nodeNameList.size();i++){
+            if(nodeNameList.get(i).equals("Entrance and Exit Gate")){
+                nodeNameList.remove(i);
+                index=i;
+                break;
+            }
+        }
+        if(index!=-1){
+            String first_elem=nodeNameList.get(0);
+            nodeNameList.set(0, "Entrance and Exit Gate");
+            nodeNameList.add(first_elem);
+        }
+        //-----------
 
         // search list
         List<String> new_possible_list_AL = possible_list_AL.stream().distinct().collect(Collectors.toList());
