@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -27,6 +28,7 @@ public class PlanRouteActivity extends AppCompatActivity {
     Map<String, ZooDataItem.VertexInfo> vInfo;
     Map<String, ZooDataItem.EdgeInfo> eInfo;
     Graph<String, IdentifiedWeightedEdge> g;
+    String returnResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,13 +127,14 @@ public class PlanRouteActivity extends AppCompatActivity {
 
         from.setText(vInfo.get(lastClosestExhibitId).name);
         to.setText(closestExhibit.getName());
+        returnResult = vInfo.get(lastClosestExhibitId).id;
 
 
 
 
         TextView nextView = findViewById(R.id.nextStop);
         if (nextClosestExhibit != null) {
-            nextView.setText("Your closest next stop is: "+nextClosestExhibit.getName());
+            nextView.setText("Your closest next stop is: " + nextClosestExhibit.getName());
         }
         else if (exhibits.size() == 1){
             nextView.setText("Your are almost done your visit");
@@ -213,9 +216,10 @@ public class PlanRouteActivity extends AppCompatActivity {
 
     }
 
-
-
     public void onGoBackClicked(View view) {
+        Intent intent = new Intent();
+        intent.putExtra("MESSAGE", returnResult);
+        setResult(2, intent);
         finish();
     }
 }

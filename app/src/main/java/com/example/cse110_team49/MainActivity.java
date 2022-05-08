@@ -33,16 +33,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
-
+    Map<String, ZooDataItem.VertexInfo> vInfo;
     TextView currentLocation;
     Dialog dialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+        vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
         Map<String, ArrayList<String>>  reversedVInfo = new HashMap<>();
         for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()){
             String key = entry.getKey();
@@ -129,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
         AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.searchInput);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, possible_list);
         textView.setAdapter(adapter);
@@ -145,17 +143,40 @@ public class MainActivity extends AppCompatActivity {
                     id = key;
                 }
             }
-            Intent intent = new Intent(this, ExhibitListViewActivity.class);
+            Intent intent = new Intent(MainActivity.this, ExhibitListViewActivity.class);
             intent.putExtra("currentId", id);
-            startActivity(intent);
-
+            String returnResult = "";
+            startActivityForResult(intent, 2);
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 2) {
+            String message = data.getStringExtra("MESSAGE");
+            currentLocation.setText(vInfo.get(message).name);
+            findViewById(R.id.myList).setOnClickListener(view -> {
+                String currentL = currentLocation.getText().toString();
+                String id = message;
+                for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+                    String key = entry.getKey();
+                    ZooDataItem.VertexInfo value = entry.getValue();
+                    if (value.name == currentL) {
+                        id = key;
+                    }
+                }
+                Intent intent = new Intent(MainActivity.this, ExhibitListViewActivity.class);
+                intent.putExtra("currentId", id);
+                String returnResult = "";
+                startActivityForResult(intent, 2);
+            });
+        }
     }
 
     public void setOnClicktoSearch(View view) {
         Intent search_page = new Intent(this, DisplaySearchResultsActivity.class);
         TextView search_input = findViewById(R.id.searchInput);
-
         search_page.putExtra("input", search_input.getText().toString());
         startActivity(search_page);
     }

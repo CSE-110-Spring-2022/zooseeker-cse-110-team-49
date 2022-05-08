@@ -2,6 +2,7 @@ package com.example.cse110_team49;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -14,6 +15,7 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import java.util.Map;
 
 public class NavigationActivity extends AppCompatActivity {
+    public String destination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +23,7 @@ public class NavigationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation);
 
         Bundle extras = getIntent().getExtras();
-        String destination = extras.getString("destination");
+        destination = extras.getString("destination");
         String currentLocation = extras.getString("from");
 
         Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
@@ -73,6 +75,9 @@ public class NavigationActivity extends AppCompatActivity {
 
     }
     public void onGoBackClicked(View view) {
+        Intent intent = new Intent();
+        intent.putExtra("MESSAGE", destination);
+        setResult(2,intent);
         finish();
     }
 }

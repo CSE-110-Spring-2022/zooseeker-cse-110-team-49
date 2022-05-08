@@ -40,7 +40,6 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(ExhibitListViewModel.class);
 
-
         Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
 
 
@@ -50,6 +49,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
                 initializeView();
             }
         },0,500);
+
         ExhibitAdapter adapter = new ExhibitAdapter();
         adapter.loadGraph(g);
         adapter.loadCurrentLocation(currentLocationID);
@@ -60,12 +60,57 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
             intent.putExtra("destination", exhibit.getItemId());
             intent.putExtra("from", currentLocationID);
-            startActivity(intent);
+            ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
+            ExhibitDao exhibitDao = db.exhibitDao();
+            exhibitDao.delete(exhibit);
+            startActivityForResult(intent, 2);
         });
         viewModel.getExhibits().observe(this, adapter::setExhibits);
         recyclerView = findViewById(R.id.exhibits);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 2) {
+            setResult(2, data);
+            currentLocationID = data.getExtras().getString("MESSAGE");
+
+
+            viewModel = new ViewModelProvider(this)
+                    .get(ExhibitListViewModel.class);
+
+            Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
+
+
+            new Timer().scheduleAtFixedRate(new TimerTask(){
+                @Override
+                public void run(){
+                    initializeView();
+                }
+            },0,500);
+
+            ExhibitAdapter adapter = new ExhibitAdapter();
+            adapter.loadGraph(g);
+            adapter.loadCurrentLocation(currentLocationID);
+            adapter.setHasStableIds(true);
+            adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
+            adapter.setOnNavigateButtonClicked((exhibit) -> {
+                Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+                intent.putExtra("destination", exhibit.getItemId());
+                intent.putExtra("from", currentLocationID);
+                ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
+                ExhibitDao exhibitDao = db.exhibitDao();
+                exhibitDao.delete(exhibit);
+                startActivityForResult(intent, 2);
+            });
+            viewModel.getExhibits().observe(this, adapter::setExhibits);
+            recyclerView = findViewById(R.id.exhibits);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     public void initializeView() {
@@ -81,12 +126,15 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     }
 
     public void onGoBackClicked(View view) {
+        Intent intent = new Intent();
+        intent.putExtra("MESSAGE", currentLocationID);
+        setResult(2, intent);
         finish();
     }
 
     public void onPlanRouteClicked(View view) {
-        Intent intent=new Intent(this,PlanRouteActivity.class);
+        Intent intent=new Intent(this, PlanRouteActivity.class);
         intent.putExtra("from", currentLocationID);
-        startActivity(intent);
+        startActivityForResult(intent, 3);
     }
 }
