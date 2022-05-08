@@ -108,9 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         // dropdown menu
         currentLocation = findViewById(R.id.setCurrentLocation);
-        //-----------
-        //currentLocation.setText("Entrance and Exit Gate");
-        //-----------
+        currentLocation.setText("Entrance and Exit Gate");
         currentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
