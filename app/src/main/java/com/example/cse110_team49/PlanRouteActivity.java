@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,6 +39,9 @@ public class PlanRouteActivity extends AppCompatActivity {
         List<Exhibit> exhibits = exhibitDao.getAll();
 
         System.out.println(exhibits.size() == 0);
+
+        TextView navigation = findViewById(R.id.plan_nav);
+        navigation.setMovementMethod(new ScrollingMovementMethod());
 
 
 

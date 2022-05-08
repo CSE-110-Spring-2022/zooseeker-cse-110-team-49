@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:visibility="visible">
 
 
-<!--    <EditText-->
-<!--        android:id="@+id/searchInput"-->
-<!--        android:layout_width="250dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:layout_marginTop="28dp"-->
-<!--        android:layout_marginEnd="120dp"-->
-<!--        android:hint="Search..."-->
-<!--        android:inputType="text"-->
-<!--        android:maxLines="1"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/searchInput"-->
+    <!--        android:layout_width="250dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:layout_marginTop="28dp"-->
+    <!--        android:layout_marginEnd="120dp"-->
+    <!--        android:hint="Search..."-->
+    <!--        android:inputType="text"-->
+    <!--        android:maxLines="1"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <AutoCompleteTextView
         android:id="@+id/searchInput"
