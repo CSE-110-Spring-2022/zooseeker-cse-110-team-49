@@ -38,6 +38,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="28dp"
         android:lineSpacingExtra="8sp"
+        android:scrollbars="vertical"
         android:text="You've already arrived at your destination!"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="18sp"

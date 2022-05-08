@@ -3,6 +3,7 @@ package com.example.cse110_team49;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,6 +36,8 @@ public class NavigationActivity extends AppCompatActivity {
         TextView from = findViewById(R.id.from);
         TextView to = findViewById(R.id.to);
         TextView navigation = findViewById(R.id.nav);
+
+        navigation.setMovementMethod(new ScrollingMovementMethod());
 
         from.setText(currentLocationName);
         to.setText(destinationName);
