@@ -32,4 +32,5 @@ public interface ExhibitDao {
 
     @Delete
     int delete(Exhibit todoListItem);
+
 }
