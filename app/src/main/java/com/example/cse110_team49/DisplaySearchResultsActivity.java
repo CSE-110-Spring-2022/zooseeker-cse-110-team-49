@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+* Display search results
+* */
 public class DisplaySearchResultsActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
@@ -23,6 +26,7 @@ public class DisplaySearchResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_search_results);
 
+        // From MainActivity
         Bundle extras = getIntent().getExtras();
         String input = extras.getString("input").toLowerCase();
 
@@ -69,8 +73,11 @@ public class DisplaySearchResultsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+        /**
+        * Display alert when the user search for an absent animal.
+        * When user click "OK", finish this activity and return to MainActivity.
+        * */
         if (!reversedVInfo.containsKey(input)) {
-//            Utilities.showAlert(this, "Sorry we don't have this animal, please go back and try another!");
             Utils.alertDialogShow(this,"Sorry we don't have this animal");
         }
         else {

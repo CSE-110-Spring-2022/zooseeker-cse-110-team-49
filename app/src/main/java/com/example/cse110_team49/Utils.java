@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 public class Utils {
+
+/**
+     Show alert that can finish the activity calling this alert.
+*/
     public static void alertDialogShow(Context context, String message) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setMessage(message);

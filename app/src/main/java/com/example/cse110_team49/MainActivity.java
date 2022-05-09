@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         List<String> new_possible_list_AL = possible_list_AL.stream().distinct().collect(Collectors.toList());
         String[] possible_list = new String[new_possible_list_AL.size()];
 
-
         // all possible location
         possible_list = new_possible_list_AL.toArray(possible_list);
 

@@ -61,6 +61,11 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
 
         public ZooDataItem.VertexInfo getAnimalItem() {return animalItem;}
 
+        /**
+        * If animal is already in user's list, display "DONE!" instead of "ADD" button.
+        * If animal not already in list, the user sees "ADD",
+        * after user click "ADD", add the animal to the list and then display "DONE!"
+        * */
         public void setAnimalItem(ZooDataItem.VertexInfo animalItem) {
             this.animalItem = animalItem;
             this.textView.setText(animalItem.name);
@@ -74,7 +79,6 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
             }
 
             addButton.setOnClickListener(view -> {
-                
                 Exhibit theExhibit = exhibitDao.get(animalItem.name);
                 if (theExhibit == null) {
                     theExhibit = new Exhibit(animalItem.id, animalItem.name);
@@ -82,9 +86,6 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
                 }
                 addButton.setText("Done!");
                 itemView.findViewById(R.id.add_animal).setBackgroundColor(Color.GRAY);
-
-
-
             });
         }
     }
