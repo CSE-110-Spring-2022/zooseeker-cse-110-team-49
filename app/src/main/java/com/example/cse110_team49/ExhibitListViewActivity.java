@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -181,12 +184,27 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     }
 
     public void clearAll(View view) {
-        Context context = getApplicationContext();
-        ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
-        ExhibitDao exhibitDao = db.exhibitDao();
-        List<Exhibit> list = exhibitDao.getAll();
-        for (Exhibit e : list) {
-            exhibitDao.delete(e);
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure to clear all?");
+        builder.setTitle("clear all");
+        builder.setCancelable(false);
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Context context = getApplicationContext();
+                ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
+                ExhibitDao exhibitDao = db.exhibitDao();
+                List<Exhibit> list = exhibitDao.getAll();
+                for (Exhibit e : list) {
+                    exhibitDao.delete(e);
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
