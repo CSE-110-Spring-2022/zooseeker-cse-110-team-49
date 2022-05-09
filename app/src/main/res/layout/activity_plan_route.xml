@@ -9,6 +9,7 @@
     <TextView
         android:id="@+id/num_remaining"
         android:layout_width="270dp"
+        android:fontFamily="@font/alata"
         android:layout_height="40dp"
         android:layout_marginTop="572dp"
         android:layout_marginEnd="112dp"
@@ -22,6 +23,7 @@
         android:id="@+id/plan_nav_title"
         android:layout_width="343dp"
         android:layout_height="44dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Plan Route"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -33,12 +35,13 @@
 
     <TextView
         android:id="@+id/plan_nav"
-        android:layout_width="360dp"
+        android:layout_width="340dp"
         android:layout_height="300dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="28dp"
         android:lineSpacingExtra="8sp"
         android:scrollbars="vertical"
+        android:fontFamily="@font/alata"
         android:text="You've already arrived at your destination!"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="18sp"
@@ -52,7 +55,7 @@
         android:layout_width="130dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/alata"
         android:gravity="center"
         android:hint="From"
@@ -65,7 +68,7 @@
         android:id="@+id/plan_to"
         android:layout_width="130dp"
         android:layout_height="45dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/alata"
         android:gravity="center"
@@ -80,7 +83,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="156dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="27dp"
         android:background="@drawable/arrow"
         app:layout_constraintEnd_toEndOf="@+id/plan_nav_title"
         app:layout_constraintHorizontal_bias="0.0"
@@ -95,6 +98,7 @@
         android:layout_marginEnd="116dp"
         android:gravity="center_vertical"
         android:text=" "
+        android:fontFamily="@font/alata"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -112,6 +116,7 @@
 
     <Button
         android:id="@+id/next_in_list"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="28dp"

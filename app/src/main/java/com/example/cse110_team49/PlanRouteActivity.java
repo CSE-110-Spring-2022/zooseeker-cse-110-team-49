@@ -51,7 +51,7 @@ public class PlanRouteActivity extends AppCompatActivity {
          * When user click "OK", finish this activity and return to ExhibitListViewActivity.
          * */
         if (exhibits.size() == 0){
-            Utils.alertDialogShow(this,"You need to add an animal before planning");
+            Utils.alertDialogShow(this,"You need to add a stop before planning");
         }
 
         else{
@@ -61,6 +61,28 @@ public class PlanRouteActivity extends AppCompatActivity {
 
             vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
             eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+
+            //--------------
+            String first_cl_id=getIntent().getExtras().getString("from");
+            String first_cl_name = null;
+            for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+                String cur_id = entry.getKey();
+                if (cur_id.equals(first_cl_id)) {
+                    first_cl_name=entry.getValue().name;
+                    break;
+                }
+            }
+            if(first_cl_name != null) {
+                for(Exhibit exhibit: exhibits){
+                    if(exhibit.getName().equals(first_cl_name)){
+                        exhibitDao.delete(exhibitDao.get(first_cl_name));
+                        break;
+                    }
+                }
+
+            }
+            //--------------
+
             g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(), "sample_zoo_graph.json");
 
             update(currentLocationID);
@@ -75,7 +97,6 @@ public class PlanRouteActivity extends AppCompatActivity {
 
 
     public void update(String lastClosestExhibitId) {
-
         initializeView();
         Context context = getApplicationContext();
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
@@ -182,10 +203,10 @@ public class PlanRouteActivity extends AppCompatActivity {
             theCount = exhibitDao.getAll().size();
         }
         if(theCount>2){
-            countView.setText(String.valueOf(theCount - 1)+" unvisited exhibitions remaining");
+            countView.setText(String.valueOf(theCount)+" unvisited exhibitions remaining");
         }
         else if(theCount == 1 || theCount == 2){
-            countView.setText(String.valueOf(theCount - 1)+" unvisited exhibition remaining");
+            countView.setText(String.valueOf(theCount)+" unvisited exhibition remaining");
         }
         else{
             countView.setText("You have no unvisited exhibition remaining");
