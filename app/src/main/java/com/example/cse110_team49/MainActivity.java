@@ -1,5 +1,7 @@
 package com.example.cse110_team49;
 
+import static com.example.cse110_team49.ZooDataItem.VertexInfo.Kind.GATE;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -82,9 +84,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //-----------
+        ArrayList<String> gate_list=new ArrayList<>();
+        currentLocation = findViewById(R.id.setCurrentLocation);
+        for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+            if (entry.getValue().kind.equals(GATE)) {
+                gate_list.add(entry.getValue().name);
+            }
+        }
+        String gate_name = "";
+        for(String i:gate_list){
+            if(i.toLowerCase().contains("gate") || i.toLowerCase().contains("main")){
+                gate_name=i;
+                break;
+            }
+        }
+        if(gate_name.length()==0 && gate_list.size()!=0){
+            gate_name=gate_list.get(0);
+        }
+        if(gate_list.size()!=0){
+            currentLocation.setText(gate_name);
+        }
+
         int index=-1;
         for(int i=0;i<nodeNameList.size();i++){
-            if(nodeNameList.get(i).equals("Entrance and Exit Gate")){
+            if(nodeNameList.get(i).equals(gate_name)){
                 nodeNameList.remove(i);
                 index=i;
                 break;
@@ -92,9 +115,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if(index!=-1){
             String first_elem=nodeNameList.get(0);
-            nodeNameList.set(0, "Entrance and Exit Gate");
+            nodeNameList.set(0, gate_name);
             nodeNameList.add(first_elem);
         }
+
 
 
         //-----------
@@ -107,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
         possible_list = new_possible_list_AL.toArray(possible_list);
 
         // dropdown menu
-        currentLocation = findViewById(R.id.setCurrentLocation);
-        currentLocation.setText("Entrance and Exit Gate");
         currentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
