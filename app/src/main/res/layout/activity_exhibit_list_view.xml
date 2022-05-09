@@ -79,16 +79,16 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="109dp"
-        android:layout_height="52dp"
+        android:layout_width="87dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="32dp"
         android:onClick="clearAll"
-        android:text="Clear All"
+        android:text="Clear"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cur_location"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.266"
         app:layout_constraintStart_toStartOf="parent" />
 
 
