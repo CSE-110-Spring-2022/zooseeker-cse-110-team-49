@@ -95,7 +95,7 @@ public class AddtoListTest {
                         isDisplayed()));
         materialButton5.perform(click());
 
-        
+
 
         ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.myList), withText("LIST"),

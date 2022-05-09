@@ -7,6 +7,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.jgrapht.Graph;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -56,10 +57,7 @@ public class ZooGraphCheck {
     @Test
     public void testGraphEdgeWeight() {
         Graph<String, IdentifiedWeightedEdge> g;
-
-
         g = ZooDataItem.loadZooGraphJSON(ApplicationProvider.getApplicationContext(), "sample_zoo_graph.json");
-
 
         assertEquals(g.getEdgeWeight(g.getEdge("entrance_exit_gate", "entrance_plaza")), 10.0,0.05);
         assertEquals(g.getEdgeWeight(g.getEdge("entrance_plaza", "gorillas")), 200.0,0.1);
@@ -83,6 +81,15 @@ public class ZooGraphCheck {
             String street = entry.getValue().street;
             assertTrue(Arrays.asList(streets).contains(street));
         }
+    }
+
+    @Test
+    public void shortestPathTest() {
+        Graph<String, IdentifiedWeightedEdge> g;
+        g = ZooDataItem.loadZooGraphJSON(ApplicationProvider.getApplicationContext(), "sample_zoo_graph.json");
+        DijkstraShortestPath d = new DijkstraShortestPath(g);
+        double weight = d.getPathWeight("entrance_exit_gate", "gators");
+        assertEquals(weight, 110.0, 10^-6);
     }
 
 }
