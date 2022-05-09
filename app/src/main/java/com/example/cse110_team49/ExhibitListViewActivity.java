@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import org.jgrapht.Graph;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -177,5 +178,15 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         Intent intent=new Intent(this, PlanRouteActivity.class);
         intent.putExtra("from", currentLocationID);
         startActivityForResult(intent, 3);
+    }
+
+    public void clearAll(View view) {
+        Context context = getApplicationContext();
+        ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
+        ExhibitDao exhibitDao = db.exhibitDao();
+        List<Exhibit> list = exhibitDao.getAll();
+        for (Exhibit e : list) {
+            exhibitDao.delete(e);
+        }
     }
 }
