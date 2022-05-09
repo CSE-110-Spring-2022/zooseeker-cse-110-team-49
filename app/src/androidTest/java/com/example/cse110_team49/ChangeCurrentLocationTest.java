@@ -4,19 +4,21 @@ package com.example.cse110_team49;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.TextView;
 
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
@@ -27,7 +29,6 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,14 +41,14 @@ public class ChangeCurrentLocationTest {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void changeCurrentLocationTest() {
+    public void changeCurrentLocationTest1() {
         ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.setCurrentLocation), withText("Entrance Plaza"),
+                allOf(withId(R.id.setCurrentLocation), withText("Entrance and Exit Gate"),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                        4),
-                                0),
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
                         isDisplayed()));
         materialTextView.perform(click());
 
@@ -56,14 +57,49 @@ public class ChangeCurrentLocationTest {
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
                                 2)))
-                .atPosition(2);
+                .atPosition(5);
         materialTextView2.perform(click());
+        TextView cur_loc = mActivityTestRule.getActivity().findViewById(R.id.setCurrentLocation);
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.setCurrentLocation), withText("Lions"),
-                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class))),
+        assertEquals(cur_loc.getText().toString(), "Gorillas");
+
+        ViewInteraction materialTextView3 = onView(
+                allOf(withId(R.id.setCurrentLocation), withText("Gorillas"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
                         isDisplayed()));
-        textView.check(matches(withText("Lions")));
+        materialTextView3.perform(click());
+
+        DataInteraction materialTextView4 = onData(anything())
+                .inAdapterView(allOf(withId(R.id.list_view),
+                        childAtPosition(
+                                withClassName(is("android.widget.LinearLayout")),
+                                2)))
+                .atPosition(2);
+        materialTextView4.perform(click());
+
+        assertEquals(cur_loc.getText().toString(), "Lions");
+
+        ViewInteraction materialTextView5 = onView(
+                allOf(withId(R.id.setCurrentLocation), withText("Lions"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        materialTextView5.perform(click());
+
+        DataInteraction materialTextView6 = onData(anything())
+                .inAdapterView(allOf(withId(R.id.list_view),
+                        childAtPosition(
+                                withClassName(is("android.widget.LinearLayout")),
+                                2)))
+                .atPosition(3);
+        materialTextView6.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
