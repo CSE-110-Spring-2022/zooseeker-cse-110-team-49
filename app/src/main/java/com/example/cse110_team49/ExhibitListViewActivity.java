@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+* Show list of added exhibits
+* */
 public class ExhibitListViewActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
@@ -31,11 +34,15 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     Map<String, ZooDataItem.VertexInfo> vInfo;
 
 
+    /**
+    * List all exhibits added to the database by the user
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibit_list_view);
 
+        // get current location id from MainActivity
         Bundle extras = getIntent().getExtras();
         currentLocationID = extras.getString("currentId");
 
@@ -44,7 +51,6 @@ public class ExhibitListViewActivity extends AppCompatActivity {
 
         Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
         vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-
 
         new Timer().scheduleAtFixedRate(new TimerTask(){
             @Override
@@ -94,13 +100,12 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             setResult(2, data);
             currentLocationID = data.getExtras().getString("MESSAGE");
 
-
             viewModel = new ViewModelProvider(this)
                     .get(ExhibitListViewModel.class);
 
             Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
 
-
+            // Update the counter
             new Timer().scheduleAtFixedRate(new TimerTask(){
                 @Override
                 public void run(){
@@ -112,7 +117,11 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             adapter.loadGraph(g);
             adapter.loadCurrentLocation(currentLocationID);
             adapter.setHasStableIds(true);
+
+            // Delete specific exhibit
             adapter.setOnDeleteButtonClickedHandler(viewModel::deleteExhibit);
+
+            // Navigate to specific exhibit
             adapter.setOnNavigateButtonClicked((exhibit) -> {
                 Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
                 intent.putExtra("destination", exhibit.getItemId());
@@ -142,6 +151,9 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         }
     }
 
+    /**
+    * Display the count
+    */
     public void initializeView() {
         Context context = getApplicationContext();
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);

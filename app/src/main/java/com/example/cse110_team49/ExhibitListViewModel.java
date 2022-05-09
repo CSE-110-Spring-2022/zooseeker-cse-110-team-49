@@ -40,8 +40,6 @@ public class ExhibitListViewModel extends AndroidViewModel {
     }
 
     private void loadUsers() {
-
         exhibits = exhibitDao.getAllLive();
-
     }
 }

@@ -26,10 +26,15 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
     private String currentLocationID;
 
     private Graph<String, IdentifiedWeightedEdge> g;
+    private Consumer<Exhibit> onNavigateButtonClicked;
+
+    /**
+    * Load graph from ExhibitListViewActivity
+    * Used to compute the distance from current location
+    */
     public void loadGraph(Graph<String, IdentifiedWeightedEdge> g) {
         this.g = g;
     }
-    private Consumer<Exhibit> onNavigateButtonClicked;
 
     public void loadCurrentLocation(String currentLocationID){
         this.currentLocationID = currentLocationID;
@@ -61,7 +66,7 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setTodoItem(exhibits.get(position));
+        holder.setItem(exhibits.get(position));
     }
 
     @Override
@@ -95,12 +100,14 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
             return exhibit;
         }
 
-        public void setTodoItem(Exhibit exhibit) {
+        /**
+        * Set distance on navigation button
+        * */
+        public void setItem(Exhibit exhibit) {
             this.exhibit = exhibit;
             DijkstraShortestPath d = new DijkstraShortestPath(g);
             double weight = d.getPathWeight(currentLocationID, exhibit.getItemId());
             this.navigation.setText("navigate\n" + String.valueOf((int)weight) + "m");
-
             this.textView.setText(exhibit.getName());
         }
     }

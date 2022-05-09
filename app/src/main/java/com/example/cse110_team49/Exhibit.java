@@ -54,6 +54,9 @@ public class Exhibit {
                 '}';
     }
 
+    /**
+     * Get Exhibits from Json. Can be used for testing
+     * */
     public static List<Exhibit> loadJSON(Context context, String path) {
         try {
             InputStream input = context.getAssets().open(path);

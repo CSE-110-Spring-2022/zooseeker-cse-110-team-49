@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ Plan route, navigate to nearest exhibit everytime the user finishes watching a exhibit
+*/
 public class PlanRouteActivity extends AppCompatActivity {
 
 
@@ -40,18 +43,19 @@ public class PlanRouteActivity extends AppCompatActivity {
         ExhibitDao exhibitDao = db.exhibitDao();
         List<Exhibit> exhibits = exhibitDao.getAll();
 
-        System.out.println(exhibits.size() == 0);
-
         TextView navigation = findViewById(R.id.plan_nav);
         navigation.setMovementMethod(new ScrollingMovementMethod());
 
-
-
+        /**
+         * Show alert when there is no animal in the list.
+         * When user click "OK", finish this activity and return to ExhibitListViewActivity.
+         * */
         if (exhibits.size() == 0){
             Utils.alertDialogShow(this,"You need to add a stop before planning");
         }
 
         else{
+            // From ExhibitListViewActivity.class
             Bundle extras = getIntent().getExtras();
             String currentLocationID = extras.getString("from");
 
@@ -79,20 +83,10 @@ public class PlanRouteActivity extends AppCompatActivity {
             }
             //--------------
 
-            g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
-
-
-
-
-            vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-            eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
             g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(), "sample_zoo_graph.json");
-
 
             update(currentLocationID);
         }
-
-
     }
 
 
@@ -109,13 +103,13 @@ public class PlanRouteActivity extends AppCompatActivity {
         ExhibitDao exhibitDao = db.exhibitDao();
         List<Exhibit> exhibits = exhibitDao.getAll();
 
-
         double minDist = Double.POSITIVE_INFINITY;
 
         double nextMinDist = Double.POSITIVE_INFINITY;
         Exhibit nextClosestExhibit=null;
 
 
+        // find current nearest exhibit to navigate to
         for (Exhibit exhibit : exhibits) {
             DijkstraShortestPath d = new DijkstraShortestPath(g);
             double weight = d.getPathWeight(lastClosestExhibitId, exhibit.getItemId());
@@ -125,6 +119,8 @@ public class PlanRouteActivity extends AppCompatActivity {
             }
         }
 
+
+        // find next nearest exhibit
         if (closestExhibit != null) {
             for (Exhibit exhibit: exhibits) {
                 if(exhibit.getItemId().equals(lastClosestExhibitId) || exhibit.getItemId().equals(closestExhibit.getItemId())){
@@ -149,8 +145,6 @@ public class PlanRouteActivity extends AppCompatActivity {
         returnResult = vInfo.get(lastClosestExhibitId).id;
 
 
-
-
         TextView nextView = findViewById(R.id.nextStop);
         if (nextClosestExhibit != null) {
             nextView.setText("Your closest next stop is: " + nextClosestExhibit.getName());
@@ -165,9 +159,10 @@ public class PlanRouteActivity extends AppCompatActivity {
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, closestExhibit.getItemId());
 
 
-
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+
+            // find the direction we go through each edge by comparing their distance from current location.
             ZooDataItem.VertexInfo vnear;
             ZooDataItem.VertexInfo vfar;
             ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
@@ -195,10 +190,8 @@ public class PlanRouteActivity extends AppCompatActivity {
 
             i++;
         }
-
-
-
     }
+
 
     public void initializeView() {
         Context context = getApplicationContext();

@@ -14,6 +14,9 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 import java.util.Map;
 
+/**
+ Navigate from current location to user-specified destination
+*/
 public class NavigationActivity extends AppCompatActivity {
     public String destination;
 
@@ -22,6 +25,7 @@ public class NavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
+        // From ExhibitListViewActivity.class
         Bundle extras = getIntent().getExtras();
         destination = extras.getString("destination");
         String currentLocation = extras.getString("from");
@@ -44,8 +48,11 @@ public class NavigationActivity extends AppCompatActivity {
         from.setText(currentLocationName);
         to.setText(destinationName);
 
+
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+
+            // find the direction we go through each edge by comparing their distance from current location.
             ZooDataItem.VertexInfo vnear;
             ZooDataItem.VertexInfo vfar;
             ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());

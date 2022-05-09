@@ -12,6 +12,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+/**
+ * Database used to keep track of all exhibits added by user
+ */
 @Database(entities = {Exhibit.class}, exportSchema = false, version = 3)
 public abstract class ExhibitDatabase extends RoomDatabase {
     private static ExhibitDatabase singleton = null;
@@ -24,6 +27,9 @@ public abstract class ExhibitDatabase extends RoomDatabase {
         return singleton;
     }
 
+    /**
+    * Database that can be used for testing
+    */
     @VisibleForTesting
     public static void injectTestDatabase(ExhibitDatabase testDatabase) {
         if (singleton != null) {
