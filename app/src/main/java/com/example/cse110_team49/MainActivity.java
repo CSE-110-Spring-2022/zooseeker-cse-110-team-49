@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                dialog = new Dialog(MainActivity.this);
                dialog.setContentView(R.layout.search_location_spinner);
-               dialog.getWindow().setLayout(650, 800);
+               dialog.getWindow().setLayout(1000, 1200);
                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                ArrayAdapter<String> adapter_curLocation = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, nodeNameList);
                dialog.show();
