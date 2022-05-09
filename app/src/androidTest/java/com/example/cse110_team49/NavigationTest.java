@@ -30,14 +30,13 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddtoListTest {
+public class NavigationTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void addtoListTest() {
-        int itemCount = 0;
+    public void navigationTest() {
         ViewInteraction materialAutoCompleteTextView = onView(
                 allOf(withId(R.id.searchInput),
                         childAtPosition(
@@ -58,17 +57,15 @@ public class AddtoListTest {
                         isDisplayed()));
         materialButton.perform(click());
 
-
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.add_animal), withText("Add"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.animal_items),
-                                        0),
+                                        3),
                                 1),
                         isDisplayed()));
         materialButton2.perform(click());
-        itemCount++;
 
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.add_animal), withText("Add"),
@@ -79,18 +76,16 @@ public class AddtoListTest {
                                 1),
                         isDisplayed()));
         materialButton3.perform(click());
-        itemCount++;
 
         ViewInteraction materialButton4 = onView(
                 allOf(withId(R.id.add_animal), withText("Add"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.animal_items),
-                                        3),
+                                        0),
                                 1),
                         isDisplayed()));
         materialButton4.perform(click());
-        itemCount++;
 
         ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.back_button), withText("Back"),
@@ -101,8 +96,6 @@ public class AddtoListTest {
                                 1),
                         isDisplayed()));
         materialButton5.perform(click());
-
-
 
         ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.myList), withText("LIST"),
@@ -115,6 +108,28 @@ public class AddtoListTest {
         materialButton6.perform(click());
 
         ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.navigation), withText("navigate\n310m"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.exhibits),
+                                        1),
+                                1),
+                        isDisplayed()));
+        materialButton7.perform(click());
+
+        ViewInteraction materialButton8 = onView(
+                allOf(withId(R.id.button2), withText("Go Back"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        materialButton8.perform(click());
+
+
+
+        ViewInteraction materialButton9 = onView(
                 allOf(withId(R.id.return_button), withText("Back"),
                         childAtPosition(
                                 childAtPosition(
@@ -122,10 +137,11 @@ public class AddtoListTest {
                                         0),
                                 2),
                         isDisplayed()));
-        materialButton7.perform(click());
+        materialButton9.perform(click());
 
-        assertEquals(itemCount, 3);
+        TextView cur_loc = mActivityTestRule.getActivity().findViewById(R.id.setCurrentLocation);
 
+        assertEquals(cur_loc.getText().toString(), "Lions");
     }
 
 
@@ -147,6 +163,5 @@ public class AddtoListTest {
             }
         };
     }
-
 
 }
