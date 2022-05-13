@@ -11,11 +11,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.TextView;
 
+import androidx.room.Room;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -24,16 +27,42 @@ import androidx.test.runner.AndroidJUnit4;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class AddtoListTest {
+    private ExhibitDao dao;
+    private ExhibitDatabase db;
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+    @Before
+    public void createDb() {
+        Context context = ApplicationProvider.getApplicationContext();
+        db = ExhibitDatabase.getSingleton(context);
+        dao = db.exhibitDao();
+        List<Exhibit> lst = dao.getAll();
+        for (Exhibit e : lst) {
+            dao.delete(e);
+        }
+    }
+
+    @After
+    public void clearDb() {
+        List<Exhibit> lst = dao.getAll();
+        for (Exhibit e : lst) {
+            dao.delete(e);
+        }
+    }
+
 
     @Test
     public void addtoListTest() {
