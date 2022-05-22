@@ -9,10 +9,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.Consumer;
 
 /**
 * Show list of added exhibits
@@ -36,7 +39,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     private ExhibitListViewModel viewModel;
     private String currentLocationID;
     Map<String, ZooDataItem.VertexInfo> vInfo;
-
+    private boolean is_detailed=false;
 
     /**
     * List all exhibits added to the database by the user
@@ -73,6 +76,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
             intent.putExtra("destination", exhibit.getItemId());
             intent.putExtra("from", currentLocationID);
+            intent.putExtra("detailed", is_detailed);
             ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
             ExhibitDao exhibitDao = db.exhibitDao();
             exhibitDao.delete(exhibit);
@@ -95,6 +99,9 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         TextView cur_location = findViewById(R.id.cur_location);
         cur_location.setText("Current location:\n"+first_cl_name);
         //------------
+        loadStatus();
+
+
     }
 
     @Override
@@ -130,6 +137,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
                 intent.putExtra("destination", exhibit.getItemId());
                 intent.putExtra("from", currentLocationID);
+                intent.putExtra("detailed", is_detailed);
                 ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
                 ExhibitDao exhibitDao = db.exhibitDao();
                 exhibitDao.delete(exhibit);
@@ -177,9 +185,16 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        saveStatus();
+    }
+
     public void onPlanRouteClicked(View view) {
         Intent intent=new Intent(this, PlanRouteActivity.class);
         intent.putExtra("from", currentLocationID);
+        intent.putExtra("detailed", is_detailed);
         startActivityForResult(intent, 3);
     }
 
@@ -207,4 +222,31 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+    public void onCheckboxClicked(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        if (checked){
+            is_detailed=true;
+        }
+        else{
+            is_detailed=false;
+        }
+        System.out.println("is_detailed: "+is_detailed);
+    }
+
+    public void loadStatus(){
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        CheckBox statusView =findViewById(R.id.is_detail);
+        boolean old_status= preferences.getBoolean("detailed",false);
+        statusView.setChecked(old_status);
+    }
+
+    public void saveStatus(){
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        CheckBox statusView =findViewById(R.id.is_detail);
+        editor.putBoolean("detailed", statusView.isChecked());
+        editor.apply();
+    }
+
 }

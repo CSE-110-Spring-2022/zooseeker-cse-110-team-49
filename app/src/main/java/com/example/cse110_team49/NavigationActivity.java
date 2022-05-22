@@ -19,6 +19,8 @@ import java.util.Map;
 */
 public class NavigationActivity extends AppCompatActivity {
     public String destination;
+    public Boolean detailed;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class NavigationActivity extends AppCompatActivity {
         // From ExhibitListViewActivity.class
         Bundle extras = getIntent().getExtras();
         destination = extras.getString("destination");
+        detailed = extras.getBoolean("detailed");
+        System.out.println("detailed here: "+detailed);
         String currentLocation = extras.getString("from");
 
         Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
@@ -70,8 +74,15 @@ public class NavigationActivity extends AppCompatActivity {
                 vnear = v2;
                 vfar  = v1;
             }
+            String message;
+            if(detailed){
+                message= "detailed version todo..."+ "\n"; //todo
+            }
+            else{//simplified version
+                message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
+                        + " ft from " + vnear.name + " to "  + vfar.name + "\n";
+            }
 
-            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft from " + vnear.name + " to "  + vfar.name + "\n";
             String currentMessage = navigation.getText().toString();
             if (currentMessage.equals("You've already arrived at your destination!")){
                 currentMessage = "";
