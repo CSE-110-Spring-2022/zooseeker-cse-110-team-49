@@ -34,7 +34,7 @@ import java.util.function.Consumer;
 * Show list of added exhibits
 * */
 public class ExhibitListViewActivity extends AppCompatActivity {
-
+    public static ArrayList<Exhibit>planned_items=new ArrayList<Exhibit>();
     public RecyclerView recyclerView;
     private ExhibitListViewModel viewModel;
     private String currentLocationID;
@@ -184,6 +184,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("MESSAGE", currentLocationID);
         setResult(2, intent);
+        planned_items.clear();
         finish();
     }
 

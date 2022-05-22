@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import org.jgrapht.Graph;
@@ -21,8 +23,6 @@ import java.util.Map;
  Plan route, navigate to nearest exhibit everytime the user finishes watching a exhibit
 */
 public class PlanRouteActivity extends AppCompatActivity {
-
-
     Exhibit closestExhibit;
     ArrayList<Exhibit> planned_items;
     Map<String, ZooDataItem.VertexInfo> vInfo;
@@ -37,7 +37,7 @@ public class PlanRouteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_route);
-        planned_items=new ArrayList<Exhibit>();
+        planned_items=ExhibitListViewActivity.planned_items;
 
         Context context = getApplicationContext();
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
@@ -98,8 +98,6 @@ public class PlanRouteActivity extends AppCompatActivity {
             update(currentLocationID);
         }
     }
-
-
 
     public void clear(){
         TextView navigation = findViewById(R.id.plan_nav);
