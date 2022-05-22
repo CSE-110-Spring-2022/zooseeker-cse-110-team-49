@@ -32,11 +32,14 @@ public class PlanRouteActivity extends AppCompatActivity {
     Map<String, ZooDataItem.EdgeInfo> eInfo;
     Graph<String, IdentifiedWeightedEdge> g;
     String returnResult;
+    public String currentLocationID;
+    public Boolean detailed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_route);
+
 
         Context context = getApplicationContext();
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
@@ -57,7 +60,8 @@ public class PlanRouteActivity extends AppCompatActivity {
         else{
             // From ExhibitListViewActivity.class
             Bundle extras = getIntent().getExtras();
-            String currentLocationID = extras.getString("from");
+            currentLocationID = extras.getString("from");
+            detailed = extras.getBoolean("detailed");
 
             vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
             eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
@@ -180,8 +184,15 @@ public class PlanRouteActivity extends AppCompatActivity {
                 vnear = v2;
                 vfar  = v1;
             }
+            String message;
+            if(detailed){
+                message= "detailed version todo..."+ "\n"; //todo
+            }
+            else{//simplified version
+                message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
+                        + " ft from " + vnear.name + " to "  + vfar.name + "\n";
+            }
 
-            String message = i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e) + " ft from " + vnear.name + " to "  + vfar.name + "\n";
             String currentMessage = navigation.getText().toString();
             if (currentMessage.equals("You've already arrived at your destination!")){
                 currentMessage = "";

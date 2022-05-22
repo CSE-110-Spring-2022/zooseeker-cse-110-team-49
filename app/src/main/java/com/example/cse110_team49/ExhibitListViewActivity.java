@@ -39,7 +39,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     private ExhibitListViewModel viewModel;
     private String currentLocationID;
     Map<String, ZooDataItem.VertexInfo> vInfo;
-    private boolean is_detailed=false;
+    private boolean is_detailed;
 
     /**
     * List all exhibits added to the database by the user
@@ -100,6 +100,8 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         cur_location.setText("Current location:\n"+first_cl_name);
         //------------
         loadStatus();
+        CheckBox detailed=findViewById(R.id.is_detail);
+        is_detailed=detailed.isChecked();
 
 
     }
