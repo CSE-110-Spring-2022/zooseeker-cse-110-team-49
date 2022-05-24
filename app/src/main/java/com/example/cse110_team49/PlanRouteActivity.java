@@ -133,14 +133,19 @@ public class PlanRouteActivity extends AppCompatActivity {
         TextView to = findViewById(R.id.plan_to);
         TextView navigation = findViewById(R.id.plan_nav);
 
-        //from.setText(vInfo.get(prevExhibitId).name);
         from.setText(curExhibit.getName());
         to.setText(prevExhibit.getName());
         returnResult = curExhibit.getItemId();
 
         TextView nextView = findViewById(R.id.nextStop);
         if (nextClosestExhibit != null) {
-            nextView.setText("Your closest next stop is: " + nextClosestExhibit.getName());
+            GraphPath<String, IdentifiedWeightedEdge> path2 = DijkstraShortestPath.
+                    findPathBetween(g,prevExhibit.getItemId(),nextClosestExhibit.getItemId());
+            int distance=0;
+            for (IdentifiedWeightedEdge e : path2.getEdgeList()) {
+                distance+=(int)g.getEdgeWeight(e);
+            }
+            nextView.setText("Closest next stop: " + nextClosestExhibit.getName()+"\n"+"Distance: "+distance+" ft");
         }
         else if (exhibits.size() == 1){
             nextView.setText("Your are almost done your visit");
@@ -149,8 +154,10 @@ public class PlanRouteActivity extends AppCompatActivity {
             nextView.setText("You have finished your plan!");
         }
 
+
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.
                 findPathBetween(g,curExhibit.getItemId(),prevExhibitId);
+
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
 
@@ -236,10 +243,15 @@ public class PlanRouteActivity extends AppCompatActivity {
         to.setText(closestExhibit.getName());
         returnResult = vInfo.get(lastClosestExhibitId).id;
 
-
         TextView nextView = findViewById(R.id.nextStop);
         if (nextClosestExhibit != null) {
-            nextView.setText("Your closest next stop is: " + nextClosestExhibit.getName());
+            GraphPath<String, IdentifiedWeightedEdge> path2 = DijkstraShortestPath.
+                    findPathBetween(g,closestExhibit.getItemId(),nextClosestExhibit.getItemId());
+            int distance=0;
+            for (IdentifiedWeightedEdge e : path2.getEdgeList()) {
+                distance+=(int)g.getEdgeWeight(e);
+            }
+            nextView.setText("Closest next stop: " + nextClosestExhibit.getName()+"\n"+"Distance: "+distance+" ft");
         }
         else if (exhibits.size() == 1){
             nextView.setText("Your are almost done your visit");
