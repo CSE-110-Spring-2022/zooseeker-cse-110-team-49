@@ -52,6 +52,9 @@ public class PlanRouteActivity extends AppCompatActivity {
         TextView navigation = findViewById(R.id.plan_nav);
         navigation.setMovementMethod(new ScrollingMovementMethod());
 
+        TextView nextStop = findViewById(R.id.nextStop);
+        nextStop.setMovementMethod(new ScrollingMovementMethod());
+
         /**
          * Show alert when there is no animal in the list.
          * When user click "OK", finish this activity and return to ExhibitListViewActivity.
