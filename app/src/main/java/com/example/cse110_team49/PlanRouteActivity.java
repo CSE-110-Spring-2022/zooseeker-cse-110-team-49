@@ -2,7 +2,9 @@ package com.example.cse110_team49;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,6 +34,9 @@ public class PlanRouteActivity extends AppCompatActivity {
     public String currentLocationID;
     public Exhibit curExhibit;
     public Boolean detailed;
+    public String FromExhibitId;
+    public boolean isSkip=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,9 @@ public class PlanRouteActivity extends AppCompatActivity {
         TextView navigation = findViewById(R.id.plan_nav);
         navigation.setMovementMethod(new ScrollingMovementMethod());
 
+        TextView nextStop = findViewById(R.id.nextStop);
+        nextStop.setMovementMethod(new ScrollingMovementMethod());
+
         /**
          * Show alert when there is no animal in the list.
          * When user click "OK", finish this activity and return to ExhibitListViewActivity.
@@ -59,6 +67,7 @@ public class PlanRouteActivity extends AppCompatActivity {
             // From ExhibitListViewActivity.class
             Bundle extras = getIntent().getExtras();
             currentLocationID = extras.getString("from");
+            FromExhibitId = currentLocationID;
             detailed = extras.getBoolean("detailed");
             vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
             eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
@@ -133,24 +142,31 @@ public class PlanRouteActivity extends AppCompatActivity {
         TextView to = findViewById(R.id.plan_to);
         TextView navigation = findViewById(R.id.plan_nav);
 
-        //from.setText(vInfo.get(prevExhibitId).name);
         from.setText(curExhibit.getName());
         to.setText(prevExhibit.getName());
         returnResult = curExhibit.getItemId();
 
         TextView nextView = findViewById(R.id.nextStop);
         if (nextClosestExhibit != null) {
-            nextView.setText("Your closest next stop is: " + nextClosestExhibit.getName());
+            GraphPath<String, IdentifiedWeightedEdge> path2 = DijkstraShortestPath.
+                    findPathBetween(g,prevExhibit.getItemId(),nextClosestExhibit.getItemId());
+            int distance=0;
+            for (IdentifiedWeightedEdge e : path2.getEdgeList()) {
+                distance+=(int)g.getEdgeWeight(e);
+            }
+            nextView.setText("Closest next stop: " + nextClosestExhibit.getName()+"\n"+"Distance: "+distance+" ft");
         }
         else if (exhibits.size() == 1){
-            nextView.setText("Your are almost done your visit");
+            nextView.setText("You are almost done your visit");
         }
         else{
             nextView.setText("You have finished your plan!");
         }
 
+
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.
                 findPathBetween(g,curExhibit.getItemId(),prevExhibitId);
+
         int i = 1;
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
 
@@ -227,22 +243,31 @@ public class PlanRouteActivity extends AppCompatActivity {
                 }
             }
         }
-
         TextView from = findViewById(R.id.plan_from);
         TextView to = findViewById(R.id.plan_to);
         TextView navigation = findViewById(R.id.plan_nav);
+        if(!isSkip){
+            from.setText(vInfo.get(lastClosestExhibitId).name);
+            to.setText(closestExhibit.getName());
+            if(vInfo.get(lastClosestExhibitId).name.equals(closestExhibit.getName()) && exhibits.size()==0){
+                to.setText("Destination");
+            }
+        }
 
-        from.setText(vInfo.get(lastClosestExhibitId).name);
-        to.setText(closestExhibit.getName());
         returnResult = vInfo.get(lastClosestExhibitId).id;
-
 
         TextView nextView = findViewById(R.id.nextStop);
         if (nextClosestExhibit != null) {
-            nextView.setText("Your closest next stop is: " + nextClosestExhibit.getName());
+            GraphPath<String, IdentifiedWeightedEdge> path2 = DijkstraShortestPath.
+                    findPathBetween(g,closestExhibit.getItemId(),nextClosestExhibit.getItemId());
+            int distance=0;
+            for (IdentifiedWeightedEdge e : path2.getEdgeList()) {
+                distance+=(int)g.getEdgeWeight(e);
+            }
+            nextView.setText("Closest next stop: " + nextClosestExhibit.getName()+"\n"+"Distance: "+distance+" ft");
         }
         else if (exhibits.size() == 1){
-            nextView.setText("Your are almost done your visit");
+            nextView.setText("You are almost done your visit");
         }
         else{
             nextView.setText("You have finished your plan!");
@@ -251,45 +276,47 @@ public class PlanRouteActivity extends AppCompatActivity {
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.
                 findPathBetween(g,lastClosestExhibitId,closestExhibit.getItemId());
 
+        if(!isSkip){
+            int i = 1;
+            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
 
-        int i = 1;
-        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+                // find the direction we go through each edge by comparing their distance from current location.
+                ZooDataItem.VertexInfo vnear;
+                ZooDataItem.VertexInfo vfar;
+                ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
+                ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
+                GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v1.id);
+                GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v2.id);
+                double dist1 = route1.getWeight();
+                double dist2 = route2.getWeight();
 
-            // find the direction we go through each edge by comparing their distance from current location.
-            ZooDataItem.VertexInfo vnear;
-            ZooDataItem.VertexInfo vfar;
-            ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
-            ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
-            GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v1.id);
-            GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v2.id);
-            double dist1 = route1.getWeight();
-            double dist2 = route2.getWeight();
+                if(dist1 < dist2) {
+                    vnear = v1;
+                    vfar  = v2;
+                }
+                else{
+                    vnear = v2;
+                    vfar  = v1;
+                }
+                String message;
+                if(detailed){
+                    message= "detailed version todo..."+ "\n"; //todo
+                }
+                else{//simplified version
+                    message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
+                            + " ft from " + vnear.name + " to "  + vfar.name + "\n";
+                }
 
-            if(dist1 < dist2) {
-                vnear = v1;
-                vfar  = v2;
-            }
-            else{
-                vnear = v2;
-                vfar  = v1;
-            }
-            String message;
-            if(detailed){
-                message= "detailed version todo..."+ "\n"; //todo
-            }
-            else{//simplified version
-                message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
-                        + " ft from " + vnear.name + " to "  + vfar.name + "\n";
-            }
+                String currentMessage = navigation.getText().toString();
+                if (currentMessage.equals("You've already arrived at your destination!")){
+                    currentMessage = "";
+                }
+                navigation.setText(currentMessage + message);
 
-            String currentMessage = navigation.getText().toString();
-            if (currentMessage.equals("You've already arrived at your destination!")){
-                currentMessage = "";
+                i++;
             }
-            navigation.setText(currentMessage + message);
-
-            i++;
         }
+        isSkip=false;
     }
 
 
@@ -315,7 +342,7 @@ public class PlanRouteActivity extends AppCompatActivity {
     }
     public void onPrevClicked(View view) {
         if(planned_items.size()==0){
-            Utils.alertDialogShow(this,"You don't have a previous stop");
+            Utils.alertDialogShow2(this,"You don't have a previous stop");
             return;
         }
         Context context = getApplicationContext();
@@ -333,6 +360,9 @@ public class PlanRouteActivity extends AppCompatActivity {
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
         ExhibitDao exhibitDao = db.exhibitDao();
         String closestExhibitId = closestExhibit.getItemId();
+        if(exhibitDao.getAll().size()==0){
+            return;
+        }
         planned_items.add(closestExhibit);
         exhibitDao.delete(closestExhibit);
         clear();
@@ -340,6 +370,7 @@ public class PlanRouteActivity extends AppCompatActivity {
             System.out.println(planned_items.get(i));
         }
         update(closestExhibitId);
+        FromExhibitId=closestExhibit.getItemId();
     }
 
     public void onGoBackClicked(View view) {
@@ -350,4 +381,50 @@ public class PlanRouteActivity extends AppCompatActivity {
     }
 
 
+    public void onSkipClicked(View view) {
+        Context context = getApplicationContext();
+        ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
+        ExhibitDao exhibitDao = db.exhibitDao();
+        List<Exhibit> exhibits = exhibitDao.getAll();
+        Exhibit nextClosestExhibit=null;
+        double nextMinDist = Double.POSITIVE_INFINITY;
+        if (closestExhibit != null) {
+            for (Exhibit exhibit: exhibits) {
+                if(exhibit.getItemId().equals(closestExhibit.getItemId())){
+                    continue;
+                }
+                DijkstraShortestPath d = new DijkstraShortestPath(g);
+                double weight = d.getPathWeight(closestExhibit.getItemId(),exhibit.getItemId());
+                if (weight < nextMinDist){
+                    nextMinDist = weight;
+                    nextClosestExhibit = exhibit;
+                }
+            }
+        }
+        if(nextClosestExhibit==null){
+            Utils.alertDialogShow2(this,"No item to skip");
+        }
+        else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure to skip "+nextClosestExhibit.getName()+" ?");
+            builder.setTitle("Skip Stop");
+            builder.setCancelable(false);
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            Exhibit finalNextClosestExhibit = nextClosestExhibit;
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    exhibitDao.delete(finalNextClosestExhibit);
+                    isSkip = true;
+                    update(FromExhibitId);
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+    }
 }
