@@ -110,23 +110,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="372dp"
-        android:layout_height="161dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="395dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="96dp"
         android:background="@drawable/customborder"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/num_remaining"
-            android:layout_width="229dp"
-            android:layout_height="65dp"
-            android:fontFamily="@font/alata"
-            android:gravity="center_vertical"
-            android:text=" "
-            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/nextStop"
@@ -150,5 +141,18 @@
         android:text="Skip"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/num_remaining"
+        android:layout_width="365dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/alata"
+        android:gravity="center_vertical"
+        android:text=" "
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/plan_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
