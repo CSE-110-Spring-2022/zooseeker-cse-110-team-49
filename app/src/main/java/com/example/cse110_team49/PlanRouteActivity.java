@@ -357,6 +357,9 @@ public class PlanRouteActivity extends AppCompatActivity {
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
         ExhibitDao exhibitDao = db.exhibitDao();
         String closestExhibitId = closestExhibit.getItemId();
+        if(exhibitDao.getAll().size()==0){
+            return;
+        }
         planned_items.add(closestExhibit);
         exhibitDao.delete(closestExhibit);
         clear();
@@ -376,10 +379,6 @@ public class PlanRouteActivity extends AppCompatActivity {
 
 
     public void onSkipClicked(View view) {
-
-
-
-
         Context context = getApplicationContext();
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
         ExhibitDao exhibitDao = db.exhibitDao();
