@@ -78,6 +78,32 @@ public class ZooDataItem {
         }
     }
 
+    public static Map<String, ZooDataItem> loadZooItemInfoJSON(Context context, String path) {
+        try {
+            InputStream inputStream = context.getAssets().open(path);
+
+            Reader reader = new InputStreamReader(inputStream);
+
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<ZooDataItem>>() {
+            }.getType();
+
+            List<ZooDataItem> zooData = gson.fromJson(reader, type);
+
+            Map<String, ZooDataItem> indexedZooData = zooData
+                    .stream()
+                    .collect(Collectors.toMap(v -> v.id, datum -> datum));
+
+            reader.close();
+            return indexedZooData;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
     public static Map<String, ZooDataItem.EdgeInfo> loadEdgeInfoJSON(Context context, String path) {
         try {
             InputStream inputStream = context.getAssets().open(path);
@@ -90,6 +116,31 @@ public class ZooDataItem {
             List<ZooDataItem.EdgeInfo> zooData = gson.fromJson(reader, type);
 
             Map<String, ZooDataItem.EdgeInfo> indexedZooData = zooData
+                    .stream()
+                    .collect(Collectors.toMap(v -> v.id, datum -> datum));
+
+            return indexedZooData;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+
+    public static Map<String, Trail> loadTrailJSON(Context context, String path) {
+        try {
+            InputStream inputStream = context.getAssets().open(path);
+
+            Reader reader = new InputStreamReader(inputStream);
+
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Trail>>() {
+            }.getType();
+            List<Trail> zooData = gson.fromJson(reader, type);
+
+            Map<String, Trail> indexedZooData = zooData
                     .stream()
                     .collect(Collectors.toMap(v -> v.id, datum -> datum));
 

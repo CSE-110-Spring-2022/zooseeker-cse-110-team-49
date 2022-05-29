@@ -19,53 +19,21 @@ import java.util.Map;
 public class DisplaySearchResultsActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
+    public ListManager lm;
     public Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_search_results);
+        lm = new ListManager(this);
 
         // From MainActivity
         Bundle extras = getIntent().getExtras();
         String input = extras.getString("input").toLowerCase();
 
-        Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-        Map<String, ArrayList<String>>  reversedVInfo = new HashMap<>();
-        for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()){
-            String key = entry.getKey();
-            ZooDataItem.VertexInfo value = entry.getValue();
-            for (String tagValue: value.tags) {
-                ArrayList<String> s = reversedVInfo.get(tagValue);
-                if (s == null) {
-                    ArrayList<String> newIdList = new ArrayList<>();
-                    newIdList.add(value.id);
-                    reversedVInfo.put(tagValue, newIdList);
-                }
-                else {
-                    if (!s.contains(value.id)) {
-                        s.add(value.id);
-                    }
-                    reversedVInfo.put(tagValue, s);
-                }
-            }
-
-            for (String nameValue: value.name.toLowerCase().split(" ")){
-                ArrayList<String> s = reversedVInfo.get(nameValue);
-                if (s == null) {
-                    ArrayList<String> newIdList = new ArrayList<>();
-                    newIdList.add(value.id);
-                    reversedVInfo.put(nameValue, newIdList);
-                }
-                else {
-                    if (!s.contains(value.id)) {
-                        s.add(value.id);
-                    }
-                    reversedVInfo.put(nameValue, s);
-                }
-            }
-
-        }
+        // Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+        Map<String, ArrayList<String>>  reversedVInfo = lm.getReversedInfo();
 
         AnimalAdapter adapter = new AnimalAdapter();
         adapter.setHasStableIds(true);
@@ -82,9 +50,9 @@ public class DisplaySearchResultsActivity extends AppCompatActivity {
         }
         else {
             ArrayList<String> idList = reversedVInfo.get(input);
-            List<ZooDataItem.VertexInfo> animalList = new ArrayList<>();
+            List<ZooDataItem> animalList = new ArrayList<>();
             for (String s : idList) {
-                animalList.add(vInfo.get(s));
+                animalList.add(lm.getExhibitInfo().get(s));
             }
             adapter.setAnimalItems(animalList);
         }

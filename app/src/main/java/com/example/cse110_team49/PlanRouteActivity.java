@@ -27,22 +27,24 @@ import java.util.Map;
 public class PlanRouteActivity extends AppCompatActivity {
     Exhibit closestExhibit;
     ArrayList<Exhibit> planned_items;
-    Map<String, ZooDataItem.VertexInfo> vInfo;
-    Map<String, ZooDataItem.EdgeInfo> eInfo;
+    Map<String, ZooDataItem> vInfo;
+    Map<String, Trail> eInfo;
     Graph<String, IdentifiedWeightedEdge> g;
     String returnResult;
+    public ListManager lm;
     public String currentLocationID;
     public Exhibit curExhibit;
     public Boolean detailed;
     public String FromExhibitId;
-    public boolean isSkip=false;
+    public boolean isSkip = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_route);
-        planned_items=ExhibitListViewActivity.planned_items;
+        lm = new ListManager(this);
+        planned_items = ExhibitListViewActivity.planned_items;
 
         Context context = getApplicationContext();
         ExhibitDatabase db = ExhibitDatabase.getSingleton(context);
@@ -61,16 +63,14 @@ public class PlanRouteActivity extends AppCompatActivity {
          * */
         if (exhibits.size() == 0){
             Utils.alertDialogShow(this,"You need to add a stop before planning");
-        }
-
-        else{
+        } else {
             // From ExhibitListViewActivity.class
             Bundle extras = getIntent().getExtras();
             currentLocationID = extras.getString("from");
             FromExhibitId = currentLocationID;
             detailed = extras.getBoolean("detailed");
-            vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-            eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+            eInfo = lm.getTrailInfo();
+            vInfo = lm.getExhibitInfo();
             //--------------
             Exhibit first_exhibit=null;
             for(Exhibit e: exhibits){
@@ -84,7 +84,7 @@ public class PlanRouteActivity extends AppCompatActivity {
             }
             String first_cl_id=getIntent().getExtras().getString("from");
             String first_cl_name = null;
-            for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+            for (Map.Entry<String, ZooDataItem> entry : vInfo.entrySet()) {
                 String cur_id = entry.getKey();
                 if (cur_id.equals(first_cl_id)) {
                     first_cl_name=entry.getValue().name;
@@ -102,7 +102,7 @@ public class PlanRouteActivity extends AppCompatActivity {
             }
             //--------------
 
-            g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(), "sample_zoo_graph.json");
+            g = lm.getGraph();
 
             update(currentLocationID);
         }
@@ -171,10 +171,10 @@ public class PlanRouteActivity extends AppCompatActivity {
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
 
             // find the direction we go through each edge by comparing their distance from current location.
-            ZooDataItem.VertexInfo vnear;
-            ZooDataItem.VertexInfo vfar;
-            ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
-            ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
+            ZooDataItem vnear;
+            ZooDataItem vfar;
+            ZooDataItem v1 = vInfo.get(g.getEdgeTarget(e).toString());
+            ZooDataItem v2 = vInfo.get(g.getEdgeSource(e).toString());
             GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, v1.id, prevExhibitId);
             GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, v2.id, prevExhibitId);
             double dist1 = route1.getWeight();
@@ -281,10 +281,10 @@ public class PlanRouteActivity extends AppCompatActivity {
             for (IdentifiedWeightedEdge e : path.getEdgeList()) {
 
                 // find the direction we go through each edge by comparing their distance from current location.
-                ZooDataItem.VertexInfo vnear;
-                ZooDataItem.VertexInfo vfar;
-                ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
-                ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
+                ZooDataItem vnear;
+                ZooDataItem vfar;
+                ZooDataItem v1 = vInfo.get(g.getEdgeTarget(e).toString());
+                ZooDataItem v2 = vInfo.get(g.getEdgeSource(e).toString());
                 GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v1.id);
                 GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v2.id);
                 double dist1 = route1.getWeight();

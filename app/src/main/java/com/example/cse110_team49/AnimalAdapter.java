@@ -18,10 +18,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder> {
-    private List<ZooDataItem.VertexInfo> animalItems = Collections.emptyList();
+    private List<ZooDataItem> animalItems = Collections.emptyList();
     private ExhibitDao exhibitDao;
 
-    public void setAnimalItems(List<ZooDataItem.VertexInfo> newAnimalItems){
+    public void setAnimalItems(List<ZooDataItem> newAnimalItems){
         this.animalItems.clear();
         this.animalItems = newAnimalItems;
         notifyDataSetChanged();
@@ -50,7 +50,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
-        private ZooDataItem.VertexInfo animalItem;
+        private ZooDataItem animalItem;
         private Button addButton;
 
         public ViewHolder(@NonNull View itemView) {
@@ -59,14 +59,14 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
             addButton = itemView.findViewById(R.id.add_animal);
         }
 
-        public ZooDataItem.VertexInfo getAnimalItem() {return animalItem;}
+        public ZooDataItem getAnimalItem() {return animalItem;}
 
         /**
         * If animal is already in user's list, display "DONE!" instead of "ADD" button.
         * If animal not already in list, the user sees "ADD",
         * after user click "ADD", add the animal to the list and then display "DONE!"
         * */
-        public void setAnimalItem(ZooDataItem.VertexInfo animalItem) {
+        public void setAnimalItem(ZooDataItem animalItem) {
             this.animalItem = animalItem;
             this.textView.setText(animalItem.name);
 

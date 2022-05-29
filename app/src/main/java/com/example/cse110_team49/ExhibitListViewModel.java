@@ -39,7 +39,6 @@ public class ExhibitListViewModel extends AndroidViewModel {
         exhibitDao.delete(exhibit);
     }
 
-
     private void loadUsers() {
         exhibits = exhibitDao.getAllLive();
     }

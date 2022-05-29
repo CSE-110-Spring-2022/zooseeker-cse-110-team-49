@@ -34,12 +34,12 @@ import java.util.function.Consumer;
 * Show list of added exhibits
 * */
 public class ExhibitListViewActivity extends AppCompatActivity {
-    public static ArrayList<Exhibit>planned_items=new ArrayList<Exhibit>();
+    public static ArrayList<Exhibit>planned_items = new ArrayList<Exhibit>();
     public RecyclerView recyclerView;
     private ExhibitListViewModel viewModel;
     private String currentLocationID;
-    Map<String, ZooDataItem.VertexInfo> vInfo;
     private boolean is_detailed;
+    private ListManager lm;
 
     /**
     * List all exhibits added to the database by the user
@@ -48,6 +48,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibit_list_view);
+        lm = new ListManager(this);
 
         // get current location id from MainActivity
         Bundle extras = getIntent().getExtras();
@@ -56,8 +57,8 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(ExhibitListViewModel.class);
 
-        Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
-        vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+        Graph<String, IdentifiedWeightedEdge> g = lm.getGraph();
+        Map<String, ZooDataItem> exhibitInfo = lm.getExhibitInfo();
 
         new Timer().scheduleAtFixedRate(new TimerTask(){
             @Override
@@ -90,7 +91,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         //------------
         String first_cl_id=currentLocationID;
         String first_cl_name=null;
-        for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+        for (Map.Entry<String, ZooDataItem> entry : exhibitInfo.entrySet()) {
             String cur_id = entry.getKey();
             if (cur_id.equals(first_cl_id)) {
                 first_cl_name=entry.getValue().name;
@@ -116,7 +117,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             viewModel = new ViewModelProvider(this)
                     .get(ExhibitListViewModel.class);
 
-            Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
+            Graph<String, IdentifiedWeightedEdge> g = lm.getGraph();
 
             // Update the counter
             new Timer().scheduleAtFixedRate(new TimerTask(){
@@ -153,7 +154,7 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             //------------
             String first_cl_id=currentLocationID;
             String first_cl_name=null;
-            for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+            for (Map.Entry<String, ZooDataItem> entry : lm.getExhibitInfo().entrySet()) {
                 String cur_id = entry.getKey();
                 if (cur_id.equals(first_cl_id)) {
                     first_cl_name=entry.getValue().name;

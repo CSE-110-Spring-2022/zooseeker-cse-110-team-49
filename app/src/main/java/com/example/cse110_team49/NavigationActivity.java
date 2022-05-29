@@ -12,6 +12,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,12 +21,14 @@ import java.util.Map;
 public class NavigationActivity extends AppCompatActivity {
     public String destination;
     public Boolean detailed;
+    public ListManager lm;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        lm = new ListManager(this);
 
         // From ExhibitListViewActivity.class
         Bundle extras = getIntent().getExtras();
@@ -34,13 +37,19 @@ public class NavigationActivity extends AppCompatActivity {
         System.out.println("detailed here: "+detailed);
         String currentLocation = extras.getString("from");
 
-        Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-        Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+        var exhibitInfo = lm.getExhibitInfo();
+        var eInfo = lm.getTrailInfo();
+        var g = lm.getGraph();
 
-        String destinationName = vInfo.get(destination).name;
-        String currentLocationName = vInfo.get(currentLocation).name;
 
-        Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
+        // Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+        // Map<String, ZooDataItem.EdgeInfo> eInfo = ZooDataItem.loadEdgeInfoJSON(this, "sample_edge_info.json");
+
+        String destinationName = exhibitInfo.get(destination).name;
+        String currentLocationName = exhibitInfo.get(currentLocation).name;
+
+        //Graph<String, IdentifiedWeightedEdge> g = ZooDataItem.loadZooGraphJSON(this.getApplicationContext(),"sample_zoo_graph.json");
+
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, currentLocation, destination);
 
         TextView from = findViewById(R.id.from);
@@ -57,10 +66,10 @@ public class NavigationActivity extends AppCompatActivity {
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
 
             // find the direction we go through each edge by comparing their distance from current location.
-            ZooDataItem.VertexInfo vnear;
-            ZooDataItem.VertexInfo vfar;
-            ZooDataItem.VertexInfo v1 = vInfo.get(g.getEdgeTarget(e).toString());
-            ZooDataItem.VertexInfo v2 = vInfo.get(g.getEdgeSource(e).toString());
+            ZooDataItem vnear;
+            ZooDataItem vfar;
+            ZooDataItem v1 = exhibitInfo.get(g.getEdgeTarget(e).toString());
+            ZooDataItem v2 = exhibitInfo.get(g.getEdgeSource(e).toString());
             GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, currentLocation, v1.id);
             GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, currentLocation, v2.id);
             double dist1 = route1.getWeight();

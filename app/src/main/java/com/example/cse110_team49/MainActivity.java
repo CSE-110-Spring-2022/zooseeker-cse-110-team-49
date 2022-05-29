@@ -35,59 +35,49 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
+    /*
+    MS1
+     */
     Map<String, ZooDataItem.VertexInfo> vInfo;
     TextView currentLocation;
     Dialog dialog;
+
+    /*
+    MS2
+     */
+    ListManager lm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
 
-        Map<String, ArrayList<String>>  reversedVInfo = new HashMap<>();
-        for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()){
-            String key = entry.getKey();
-            ZooDataItem.VertexInfo value = entry.getValue();
-            for (String tagValue: value.tags) {
-                ArrayList<String> s = reversedVInfo.get(tagValue);
-                if (s == null) {
-                    ArrayList<String> newIdList = new ArrayList<>();
-                    newIdList.add(value.id);
-                    reversedVInfo.put(tagValue, newIdList);
-                }
-                else {
-                    s.add(value.id);
-                    reversedVInfo.put(tagValue, s);
-                }
-            }
+        /**
+         * MS2
+         */
+        lm = new ListManager(this);
 
-            for (String nameValue: value.name.toLowerCase().split(" ")){
-                ArrayList<String> s = reversedVInfo.get(nameValue);
-                if (s == null) {
-                    ArrayList<String> newIdList = new ArrayList<>();
-                    newIdList.add(value.id);
-                    reversedVInfo.put(nameValue, newIdList);
-                }
-                else {
-                    s.add(value.id);
-                    reversedVInfo.put(nameValue, s);
-                }
-            }
-        }
+
+        /**
+         * MS1
+         */
+        // vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+        Map<String, ArrayList<String>> reversedInfo = lm.getReversedInfo();
+
         List<String> possible_list_AL = new ArrayList<String>();
         List<String> nodeNameList = new ArrayList<String>();
 
-        vInfo.forEach((k, v) -> {
+        lm.getExhibitInfo().forEach((k, v) -> {
             possible_list_AL.addAll(v.tags);
             nodeNameList.add(v.name);
         });
 
         //-----------
-        ArrayList<String> gate_list=new ArrayList<>();
+        ArrayList<String> gate_list = new ArrayList<>();
         currentLocation = findViewById(R.id.setCurrentLocation);
-        for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+        for (Map.Entry<String, ZooDataItem> entry : lm.getExhibitInfo().entrySet()) {
             if (entry.getValue().kind.equals(GATE)) {
                 gate_list.add(entry.getValue().name);
             }
@@ -176,9 +166,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.myList).setOnClickListener(view -> {
             String currentL = currentLocation.getText().toString();
             String id = "entrance_exit_gate";
-            for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+            for (Map.Entry<String, ZooDataItem> entry : lm.getExhibitInfo().entrySet()) {
                 String key = entry.getKey();
-                ZooDataItem.VertexInfo value = entry.getValue();
+                ZooDataItem value = entry.getValue();
                 if (value.name == currentL) {
                     id = key;
                 }
@@ -195,13 +185,13 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == 2) {
             String message = data.getStringExtra("MESSAGE");
-            currentLocation.setText(vInfo.get(message).name);
+            currentLocation.setText(lm.getExhibitInfo().get(message).name);
             findViewById(R.id.myList).setOnClickListener(view -> {
                 String currentL = currentLocation.getText().toString();
                 String id = message;
-                for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()) {
+                for (Map.Entry<String, ZooDataItem> entry : lm.getExhibitInfo().entrySet()) {
                     String key = entry.getKey();
-                    ZooDataItem.VertexInfo value = entry.getValue();
+                    ZooDataItem value = entry.getValue();
                     if (value.name == currentL) {
                         id = key;
                     }
