@@ -7,19 +7,6 @@
     tools:context=".PlanRouteActivity">
 
     <TextView
-        android:id="@+id/num_remaining"
-        android:layout_width="270dp"
-        android:fontFamily="@font/alata"
-        android:layout_height="40dp"
-        android:layout_marginTop="572dp"
-        android:layout_marginEnd="112dp"
-        android:gravity="center_vertical"
-        android:text=" "
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/plan_nav_title"
         android:layout_width="343dp"
         android:layout_height="44dp"
@@ -32,23 +19,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/plan_nav"
-        android:layout_width="340dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="28dp"
-        android:lineSpacingExtra="8sp"
-        android:scrollbars="vertical"
-        android:fontFamily="@font/alata"
-        android:text="You've already arrived at your destination!"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/arrow"
-        app:layout_constraintVertical_bias="0.087" />
 
     <TextView
         android:id="@+id/plan_from"
@@ -90,60 +60,95 @@
         app:layout_constraintStart_toStartOf="@+id/plan_nav_title"
         app:layout_constraintTop_toBottomOf="@+id/plan_nav_title" />
 
-    <TextView
-        android:id="@+id/nextStop"
-        android:layout_width="270dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="516dp"
-        android:layout_marginEnd="116dp"
-        android:gravity="center_vertical"
-        android:text=" "
-        android:fontFamily="@font/alata"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="82dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:onClick="onGoBackClicked"
         android:text="Go Back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/next_in_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="84dp"
+        android:layout_width="80dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="110dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/ic_action_next"
         android:onClick="onNextClicked"
-        android:text="NEXT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/prev_in_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="184dp"
+        android:layout_width="80dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/ic_action_pre"
         android:onClick="onPrevClicked"
-        android:text="PREV"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/plan_nav"
+        android:layout_width="340dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="132dp"
+        android:fontFamily="@font/alata"
+        android:lineSpacingExtra="8sp"
+        android:scrollbars="vertical"
+        android:text="You've already arrived at your destination!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="372dp"
+        android:layout_height="161dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="96dp"
+        android:background="@drawable/customborder"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/num_remaining"
+            android:layout_width="229dp"
+            android:layout_height="65dp"
+            android:fontFamily="@font/alata"
+            android:gravity="center_vertical"
+            android:text=" "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/nextStop"
+            android:layout_width="229dp"
+            android:layout_height="62dp"
+            android:fontFamily="@font/alata"
+            android:gravity="center_vertical"
+            android:text=" "
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/skip_exhibit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="132dp"
+        android:layout_width="84dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="270dp"
+        android:layout_marginBottom="115dp"
         android:onClick="onSkipClicked"
-        android:text="SKIP"
+        android:text="Skip"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
