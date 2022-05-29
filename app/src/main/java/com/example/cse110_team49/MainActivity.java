@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
+
         Map<String, ArrayList<String>>  reversedVInfo = new HashMap<>();
         for (Map.Entry<String, ZooDataItem.VertexInfo> entry : vInfo.entrySet()){
             String key = entry.getKey();
