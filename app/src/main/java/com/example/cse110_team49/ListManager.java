@@ -57,6 +57,34 @@ public class ListManager {
         return reversedVInfo;
     }
 
+    public String getNearestExhibit(double lat, double lon) {
+        String result = "";
+        ZooLocation currentLocation = new ZooLocation(lat, lon);
+        double minDist = Double.POSITIVE_INFINITY;
+        for (Map.Entry<String, ZooDataItem> entry : exhibitInfo.entrySet()) {
+            String key = entry.getKey();
+            ZooDataItem value = entry.getValue();
+            if (value.lat == null || value.lng == null) {
+                continue;
+            }
+            ZooLocation newLocation = new ZooLocation(value.lat, value.lng);
+            result = currentLocation.dist(newLocation) < minDist ? value.id : result;
+            minDist = Math.min(currentLocation.dist(newLocation), minDist);
+        }
+        return result;
+    }
+
+    public String getIdFromName(String name) {
+        for (Map.Entry<String, ZooDataItem> entry : exhibitInfo.entrySet()) {
+            String key = entry.getKey();
+            ZooDataItem value = entry.getValue();
+            if (value.name.equals(name)) {
+                return key;
+            }
+        }
+        return null;
+    }
+
     public Map<String, ZooDataItem> getExhibitInfo() {
         return exhibitInfo;
     }
