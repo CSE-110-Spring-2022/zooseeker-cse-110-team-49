@@ -167,47 +167,51 @@ public class PlanRouteActivity extends AppCompatActivity {
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.
                 findPathBetween(g,curExhibit.getItemId(),prevExhibitId);
 
-        int i = 1;
-        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-
-            // find the direction we go through each edge by comparing their distance from current location.
-            ZooDataItem vnear;
-            ZooDataItem vfar;
-            ZooDataItem v1 = vInfo.get(g.getEdgeTarget(e).toString());
-            ZooDataItem v2 = vInfo.get(g.getEdgeSource(e).toString());
-            GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, v1.id, prevExhibitId);
-            GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, v2.id, prevExhibitId);
-            double dist1 = route1.getWeight();
-            double dist2 = route2.getWeight();
-
-            if(dist1 < dist2) {
-                vnear = v1;
-                vfar  = v2;
-            }
-            else{
-                vnear = v2;
-                vfar  = v1;
-            }
-            String message;
-            if(detailed){
-                message= "detailed version todo..."+ "\n"; //todo
-            }
-            else{ //simplified version
-                message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
-                        + " ft from " + vfar.name + " to "  + vnear.name + "\n";
-            }
-
-            String currentMessage = navigation.getText().toString();
-            if (currentMessage.equals("You've already arrived at your destination!")){
-                currentMessage = "";
-            }
-            navigation.setText(currentMessage + message);
-
-            i++;
-        }
+//        int i = 1;
+//        List<ArrayList<String>> stepInfo = new ArrayList<ArrayList<String>>();
+//        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+//
+//            // find the direction we go through each edge by comparing their distance from current location.
+//            ZooDataItem vnear;
+//            ZooDataItem vfar;
+//            ZooDataItem v1 = vInfo.get(g.getEdgeTarget(e).toString());
+//            ZooDataItem v2 = vInfo.get(g.getEdgeSource(e).toString());
+//            GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, v1.id, prevExhibitId);
+//            GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, v2.id, prevExhibitId);
+//            double dist1 = route1.getWeight();
+//            double dist2 = route2.getWeight();
+//
+//            if(dist1 < dist2) {
+//                vnear = v1;
+//                vfar  = v2;
+//            }
+//            else{
+//                vnear = v2;
+//                vfar  = v1;
+//            }
+//            String message;
+//            if(detailed){
+//                message= "detailed version todo..."+ "\n"; //todo
+//            }
+//            else{ //simplified version
+//                message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
+//                        + " ft from " + vfar.name + " to "  + vnear.name + "\n";
+//            }
+//
+//            String currentMessage = navigation.getText().toString();
+//            if (currentMessage.equals("You've already arrived at your destination!")){
+//                currentMessage = "";
+//            }
+//            navigation.setText(currentMessage + message);
+//
+//            i++;
+//        }
+        messageManager(prevExhibitId, navigation, path);
         this.curExhibit=prevExhibit;
         closestExhibit=prevExhibit;
     }
+
+
 
     public void update(String lastClosestExhibitId) {
         initializeView();
@@ -277,44 +281,45 @@ public class PlanRouteActivity extends AppCompatActivity {
                 findPathBetween(g,lastClosestExhibitId,closestExhibit.getItemId());
 
         if(!isSkip){
-            int i = 1;
-            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-
-                // find the direction we go through each edge by comparing their distance from current location.
-                ZooDataItem vnear;
-                ZooDataItem vfar;
-                ZooDataItem v1 = vInfo.get(g.getEdgeTarget(e).toString());
-                ZooDataItem v2 = vInfo.get(g.getEdgeSource(e).toString());
-                GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v1.id);
-                GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v2.id);
-                double dist1 = route1.getWeight();
-                double dist2 = route2.getWeight();
-
-                if(dist1 < dist2) {
-                    vnear = v1;
-                    vfar  = v2;
-                }
-                else{
-                    vnear = v2;
-                    vfar  = v1;
-                }
-                String message;
-                if(detailed){
-                    message= "detailed version todo..."+ "\n"; //todo
-                }
-                else{//simplified version
-                    message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
-                            + " ft from " + vnear.name + " to "  + vfar.name + "\n";
-                }
-
-                String currentMessage = navigation.getText().toString();
-                if (currentMessage.equals("You've already arrived at your destination!")){
-                    currentMessage = "";
-                }
-                navigation.setText(currentMessage + message);
-
-                i++;
-            }
+            messageManager(lastClosestExhibitId, navigation, path);
+//            int i = 1;
+//            for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+//
+//                // find the direction we go through each edge by comparing their distance from current location.
+//                ZooDataItem vnear;
+//                ZooDataItem vfar;
+//                ZooDataItem v1 = vInfo.get(g.getEdgeTarget(e).toString());
+//                ZooDataItem v2 = vInfo.get(g.getEdgeSource(e).toString());
+//                GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v1.id);
+//                GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, lastClosestExhibitId, v2.id);
+//                double dist1 = route1.getWeight();
+//                double dist2 = route2.getWeight();
+//
+//                if(dist1 < dist2) {
+//                    vnear = v1;
+//                    vfar  = v2;
+//                }
+//                else{
+//                    vnear = v2;
+//                    vfar  = v1;
+//                }
+//                String message;
+//                if(detailed){
+//                    message= "detailed version todo..."+ "\n"; //todo
+//                }
+//                else{//simplified version
+//                    message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
+//                            + " ft from " + vnear.name + " to "  + vfar.name + "\n";
+//                }
+//
+//                String currentMessage = navigation.getText().toString();
+//                if (currentMessage.equals("You've already arrived at your destination!")){
+//                    currentMessage = "";
+//                }
+//                navigation.setText(currentMessage + message);
+//
+//                i++;
+//            }
         }
         isSkip=false;
     }
@@ -425,6 +430,82 @@ public class PlanRouteActivity extends AppCompatActivity {
             AlertDialog alert = builder.create();
             alert.show();
         }
+    }
 
+    private void messageManager(String prevExhibitId, TextView navigation, GraphPath<String, IdentifiedWeightedEdge> path) {
+        int i = 1;
+        List<ArrayList<String>> stepInfo = new ArrayList<ArrayList<String>>();
+        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+
+            // find the direction we go through each edge by comparing their distance from current location.
+            ZooDataItem vnear;
+            ZooDataItem vfar;
+            ZooDataItem v1 = vInfo.get(g.getEdgeTarget(e).toString());
+            ZooDataItem v2 = vInfo.get(g.getEdgeSource(e).toString());
+            GraphPath<String, IdentifiedWeightedEdge> route1 = DijkstraShortestPath.findPathBetween(g, prevExhibitId, v1.id);
+            GraphPath<String, IdentifiedWeightedEdge> route2 = DijkstraShortestPath.findPathBetween(g, prevExhibitId, v2.id);
+            double dist1 = route1.getWeight();
+            double dist2 = route2.getWeight();
+
+            if(dist1 < dist2) {
+//                vnear = v1;
+                vfar  = v2;
+            }
+            else{
+//                vnear = v2;
+                vfar  = v1;
+            }
+            ArrayList<String> oneStep = new ArrayList<>();
+            oneStep.add(Integer.toString(i));
+            oneStep.add(eInfo.get(e.getId()).street);
+            oneStep.add(Double.toString(g.getEdgeWeight(e)));
+//            oneStep.add(vnear.name);
+            oneStep.add(vfar.name);
+            stepInfo.add(oneStep);
+            i++;
+        }
+        String message = "";
+        if (stepInfo.size() == 0){
+            message = "You've already arrived at your destination!";
+        }
+        else {
+            if (detailed) {
+                for (int j = 0; j < stepInfo.size(); j++) {
+                    message += stepInfo.get(j).get(0) + ". ";
+                    if (j > 0) {
+                        if (stepInfo.get(j).get(1).equals(stepInfo.get(j - 1).get(1))) {
+                            message += "Continue on ";
+                        } else {
+                            message += "Proceed on ";
+                        }
+                    } else {
+                        message += "Proceed on ";
+                    }
+                    message += stepInfo.get(j).get(1) + " " + stepInfo.get(j).get(2) + " ft towards " + stepInfo.get(j).get(3) + "\n";
+                }
+            } else {
+                ArrayList<ArrayList<String>> briefInfo = new ArrayList<>();
+                briefInfo.add(stepInfo.get(0));
+                for (int j = 1; j < stepInfo.size(); j++) {
+                    ArrayList<String> recent = briefInfo.get(briefInfo.size() - 1);
+                    if (stepInfo.get(j).get(1).equals(recent.get(1))) {
+                        ArrayList<String> newBrief = new ArrayList<>();
+                        newBrief.add(Integer.toString(briefInfo.size()));
+                        newBrief.add(recent.get(1));
+                        newBrief.add(Double.toString(Double.parseDouble(recent.get(2)) + Double.parseDouble(stepInfo.get(j).get(2))));
+                        newBrief.add(stepInfo.get(j).get(3));
+                        briefInfo.set(briefInfo.size() - 1, newBrief);
+                    } else {
+                        var oldBrief = stepInfo.get(j);
+                        oldBrief.set(0, Integer.toString(briefInfo.size() + 1));
+                        briefInfo.add(oldBrief);
+                    }
+                }
+                for (ArrayList<String> info : briefInfo) {
+                    message += info.get(0) + ". Proceed on " + info.get(1) + " " + info.get(2) + " ft to " + info.get(3) + "\n";
+                }
+            }
+        }
+        navigation.setText(message);
     }
 }
