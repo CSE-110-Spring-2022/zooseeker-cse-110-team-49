@@ -28,6 +28,7 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
     private Graph<String, IdentifiedWeightedEdge> g;
     private Consumer<Exhibit> onNavigateButtonClicked;
 
+
     /**
     * Load graph from ExhibitListViewActivity
     * Used to compute the distance from current location

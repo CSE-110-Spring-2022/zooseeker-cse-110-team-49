@@ -35,8 +35,10 @@ public class ListManager {
                     reversedVInfo.put(tagValue, newIdList);
                 }
                 else {
-                    s.add(value.id);
-                    reversedVInfo.put(tagValue, s);
+                    if (!s.contains(value.id)) {
+                        s.add(value.id);
+                        reversedVInfo.put(tagValue, s);
+                    }
                 }
             }
 
@@ -49,8 +51,10 @@ public class ListManager {
                     reversedVInfo.put(nameValue, newIdList);
                 }
                 else {
-                    s.add(value.id);
-                    reversedVInfo.put(nameValue, s);
+                    if (!s.contains(value.id)) {
+                        s.add(value.id);
+                        reversedVInfo.put(nameValue, s);
+                    }
                 }
             }
         }
