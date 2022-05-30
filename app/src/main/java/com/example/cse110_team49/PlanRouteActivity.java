@@ -397,18 +397,29 @@ public class PlanRouteActivity extends AppCompatActivity {
         }
         else {
             if (detailed) {
+                int count = 0;
                 for (int j = 0; j < stepInfo.size(); j++) {
-                    message += stepInfo.get(j).get(0) + ". ";
-                    if (j > 0) {
-                        if (stepInfo.get(j).get(1).equals(stepInfo.get(j - 1).get(1))) {
-                            message += "Continue on ";
+                    if (Double.parseDouble(stepInfo.get(j).get(2)) == 0 && j == stepInfo.size()-1) {
+                        message += (Integer.parseInt(stepInfo.get(j).get(0)) - count) + ". " + "Explore in " + stepInfo.get(j).get(3) + "\n";
+                    }
+                    else if (Double.parseDouble(stepInfo.get(j).get(2)) == 0) {
+                        count++;
+                        continue;
+                    }
+                    else {
+                        message += (Integer.parseInt(stepInfo.get(j).get(0)) - count) + ". ";
+                        if (j > 0) {
+                            if (stepInfo.get(j).get(1).equals(stepInfo.get(j - 1).get(1))) {
+                                message += "Continue on ";
+                            } else {
+                                message += "Proceed on ";
+                            }
                         } else {
                             message += "Proceed on ";
                         }
-                    } else {
-                        message += "Proceed on ";
+                        message += stepInfo.get(j).get(1) + " " + stepInfo.get(j).get(2) + " ft towards " + stepInfo.get(j).get(3) + "\n";
+
                     }
-                    message += stepInfo.get(j).get(1) + " " + stepInfo.get(j).get(2) + " ft towards " + stepInfo.get(j).get(3) + "\n";
                 }
             } else {
                 ArrayList<ArrayList<String>> briefInfo = new ArrayList<>();
@@ -422,14 +433,23 @@ public class PlanRouteActivity extends AppCompatActivity {
                         newBrief.add(Double.toString(Double.parseDouble(recent.get(2)) + Double.parseDouble(stepInfo.get(j).get(2))));
                         newBrief.add(stepInfo.get(j).get(3));
                         briefInfo.set(briefInfo.size() - 1, newBrief);
-                    } else {
+                    }
+                    else {
                         var oldBrief = stepInfo.get(j);
                         oldBrief.set(0, Integer.toString(briefInfo.size() + 1));
                         briefInfo.add(oldBrief);
                     }
                 }
-                for (ArrayList<String> info : briefInfo) {
-                    message += info.get(0) + ". Proceed on " + info.get(1) + " " + info.get(2) + " ft to " + info.get(3) + "\n";
+                for (int j = 1; j < briefInfo.size(); j++) {
+                    ArrayList<String> info = briefInfo.get(j);
+                    if (Double.parseDouble(info.get(2)) == 0 && j == briefInfo.size() - 1) {
+                        message += "==> Explore in " + info.get(3) + "\n";
+                    } else if (Double.parseDouble(info.get(2)) == 0) {
+                        continue;
+                    }
+                    else {
+                        message += "==> Proceed on " + info.get(1) + " " + info.get(2) + " ft to " + info.get(3) + "\n";
+                    }
                 }
             }
         }
