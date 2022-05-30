@@ -12,8 +12,10 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  Navigate from current location to user-specified destination
@@ -63,6 +65,7 @@ public class NavigationActivity extends AppCompatActivity {
 
 
         int i = 1;
+        List<ArrayList<String>> stepInfo = new ArrayList<ArrayList<String>>();
         for (IdentifiedWeightedEdge e : path.getEdgeList()) {
 
             // find the direction we go through each edge by comparing their distance from current location.
@@ -76,30 +79,65 @@ public class NavigationActivity extends AppCompatActivity {
             double dist2 = route2.getWeight();
 
             if(dist1 < dist2) {
-                vnear = v1;
+//                vnear = v1;
                 vfar  = v2;
             }
             else{
-                vnear = v2;
+//                vnear = v2;
                 vfar  = v1;
             }
-            String message;
-            if(detailed){
-                message= "detailed version todo..."+ "\n"; //todo
-            }
-            else{//simplified version
-                message= i + ". Walk on " + eInfo.get(e.getId()).street + " " + (int)g.getEdgeWeight(e)
-                        + " ft from " + vnear.name + " to "  + vfar.name + "\n";
-            }
-
-            String currentMessage = navigation.getText().toString();
-            if (currentMessage.equals("You've already arrived at your destination!")){
-                currentMessage = "";
-            }
-            navigation.setText(currentMessage + message);
+            ArrayList<String> oneStep = new ArrayList<>();
+            oneStep.add(Integer.toString(i));
+            oneStep.add(eInfo.get(e.getId()).street);
+            oneStep.add(Double.toString(g.getEdgeWeight(e)));
+//            oneStep.add(vnear.name);
+            oneStep.add(vfar.name);
+            stepInfo.add(oneStep);
             i++;
         }
-
+        String message = "";
+        if (stepInfo.size() == 0){
+            message = "You've already arrived at your destination!";
+        }
+        else {
+            if (detailed) {
+                for (int j = 0; j < stepInfo.size(); j++) {
+                    message += stepInfo.get(j).get(0) + ". ";
+                    if (j > 0) {
+                        if (stepInfo.get(j).get(1).equals(stepInfo.get(j - 1).get(1))) {
+                            message += "Continue on ";
+                        } else {
+                            message += "Proceed on ";
+                        }
+                    } else {
+                        message += "Proceed on ";
+                    }
+                    message += stepInfo.get(j).get(1) + " " + stepInfo.get(j).get(2) + " ft towards " + stepInfo.get(j).get(3) + "\n";
+                }
+            } else {
+                ArrayList<ArrayList<String>> briefInfo = new ArrayList<>();
+                briefInfo.add(stepInfo.get(0));
+                for (int j = 1; j < stepInfo.size(); j++) {
+                    ArrayList<String> recent = briefInfo.get(briefInfo.size() - 1);
+                    if (stepInfo.get(j).get(1).equals(recent.get(1))) {
+                        ArrayList<String> newBrief = new ArrayList<>();
+                        newBrief.add(Integer.toString(briefInfo.size()));
+                        newBrief.add(recent.get(1));
+                        newBrief.add(Double.toString(Double.parseDouble(recent.get(2)) + Double.parseDouble(stepInfo.get(j).get(2))));
+                        newBrief.add(stepInfo.get(j).get(3));
+                        briefInfo.set(briefInfo.size() - 1, newBrief);
+                    } else {
+                        var oldBrief = stepInfo.get(j);
+                        oldBrief.set(0, Integer.toString(briefInfo.size() + 1));
+                        briefInfo.add(oldBrief);
+                    }
+                }
+                for (ArrayList<String> info : briefInfo) {
+                    message += info.get(0) + ". Proceed on " + info.get(1) + " " + info.get(2) + " ft to " + info.get(3) + "\n";
+                }
+            }
+        }
+        navigation.setText(message);
     }
     public void onGoBackClicked(View view) {
         Intent intent = new Intent();

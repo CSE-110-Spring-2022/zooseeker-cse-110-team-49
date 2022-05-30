@@ -28,6 +28,7 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
     private Graph<String, IdentifiedWeightedEdge> g;
     private Consumer<Exhibit> onNavigateButtonClicked;
 
+
     /**
     * Load graph from ExhibitListViewActivity
     * Used to compute the distance from current location
@@ -107,7 +108,6 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
             this.exhibit = exhibit;
             DijkstraShortestPath d = new DijkstraShortestPath(g);
             double weight = d.getPathWeight(currentLocationID, exhibit.getItemId());
-//            double weight = 0;
             this.navigation.setText("navigate\n" + String.valueOf((int)weight) + "ft");
             this.textView.setText(exhibit.getName());
         }
