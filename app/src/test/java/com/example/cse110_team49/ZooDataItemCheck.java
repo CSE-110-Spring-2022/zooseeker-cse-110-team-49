@@ -55,21 +55,21 @@ public class ZooDataItemCheck {
     @Test
     public void testCorrectionOfLoadLatLng() {
         String[] keys = new String[] {"Hippos", "Scripps Aviary"};
-        double[] lats={32.745,32.748};
-        double[] lngs={-117.166,-117.177};
+        double[] lats={32.74531131120979,32.7475300638514};
+        double[] lngs={ -117.16626781198586,-117.17681064859705};
         int cur_ind=0;
         Map<String, ZooDataItem> vInfo;
         vInfo = ZooDataItem.loadZooItemInfoJSON(ApplicationProvider.getApplicationContext(), "exhibit_info.json");
         int count=0;
-        for (Map.Entry<String, ZooDataItem> entry : vInfo.entrySet()){
-            for (String i:keys){
+        for (String i:keys){
+            for (Map.Entry<String, ZooDataItem> entry : vInfo.entrySet()){
                 String key = entry.getValue().name;
                 if(i.equals(key)){
                     count++;
                     double cur_lat = entry.getValue().lat;
                     double cur_lng = entry.getValue().lng;
-                    assertTrue(cur_lat>=lats[cur_ind]-0.001 && cur_lat<=lats[cur_ind]+0.001);
-                    assertTrue(cur_lng>=lngs[cur_ind]-0.001 && cur_lat<=lngs[cur_ind]+0.001);
+                    assertEquals(cur_lat,lats[cur_ind],0.001);
+                    assertEquals(cur_lng,lngs[cur_ind],0.001);
                     cur_ind++;
 
                 }
