@@ -78,9 +78,6 @@ public class ExhibitListViewActivity extends AppCompatActivity {
             intent.putExtra("destination", exhibit.getItemId());
             intent.putExtra("from", currentLocationID);
             intent.putExtra("detailed", is_detailed);
-            ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
-            ExhibitDao exhibitDao = db.exhibitDao();
-            exhibitDao.delete(exhibit);
             startActivityForResult(intent, 2);
         });
         viewModel.getExhibits().observe(this, adapter::setExhibits);
@@ -141,9 +138,6 @@ public class ExhibitListViewActivity extends AppCompatActivity {
                 intent.putExtra("destination", exhibit.getItemId());
                 intent.putExtra("from", currentLocationID);
                 intent.putExtra("detailed", is_detailed);
-                ExhibitDatabase db = ExhibitDatabase.getSingleton(getApplicationContext());
-                ExhibitDao exhibitDao = db.exhibitDao();
-                exhibitDao.delete(exhibit);
                 startActivityForResult(intent, 2);
             });
             viewModel.getExhibits().observe(this, adapter::setExhibits);

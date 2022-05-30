@@ -101,10 +101,8 @@ public class NavigationActivity extends AppCompatActivity {
         }
 
     }
-    public void onGoBackClicked(View view) {
-        Intent intent = new Intent();
-        intent.putExtra("MESSAGE", destination);
-        setResult(2,intent);
+
+    public void back(View view) {
         finish();
     }
 }
