@@ -22,6 +22,7 @@ public class Utils {
         });
         alertDialog.show();
     }
+
     public static void alertDialogShow2(Context context, String message) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setMessage(message);

@@ -108,7 +108,6 @@ public class ExhibitAdapter extends RecyclerView.Adapter<ExhibitAdapter.ViewHold
             this.exhibit = exhibit;
             DijkstraShortestPath d = new DijkstraShortestPath(g);
             double weight = d.getPathWeight(currentLocationID, exhibit.getItemId());
-//            double weight = 100;
             this.navigation.setText("navigate\n" + String.valueOf((int)weight) + "ft");
             this.textView.setText(exhibit.getName());
         }

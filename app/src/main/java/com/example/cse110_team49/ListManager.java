@@ -19,6 +19,22 @@ public class ListManager {
         exhibitInfo = ZooDataItem.loadZooItemInfoJSON(context, "exhibit_info.json");
         trailInfo = ZooDataItem.loadTrailJSON(context, "trail_info.json");
         graphInfo = ZooDataItem.loadZooGraphJSON(context, "zoo_graph.json");
+
+        for (Map.Entry<String, ZooDataItem> entry : exhibitInfo.entrySet()){
+            String key = entry.getKey();
+            ZooDataItem value = entry.getValue();
+            if (value.groupId != null) {
+                ZooDataItem parent =  exhibitInfo.get(value.groupId);
+                var uniqueID = value.name + "+" + parent.name;
+                graphInfo.addVertex(key);
+                var e = graphInfo.addEdge(key, parent.id);
+                e.setId(uniqueID);
+                graphInfo.setEdgeWeight(e, 0);
+                Trail t = new Trail(uniqueID, uniqueID);
+                trailInfo.put(uniqueID, t);
+            }
+        }
+
     }
 
     public Map<String, ArrayList<String>> getReversedInfo() {
@@ -59,6 +75,34 @@ public class ListManager {
             }
         }
         return reversedVInfo;
+    }
+
+    public String getNearestExhibit(double lat, double lon) {
+        String result = "";
+        ZooLocation currentLocation = new ZooLocation(lat, lon);
+        double minDist = Double.POSITIVE_INFINITY;
+        for (Map.Entry<String, ZooDataItem> entry : exhibitInfo.entrySet()) {
+            String key = entry.getKey();
+            ZooDataItem value = entry.getValue();
+            if (value.lat == null || value.lng == null) {
+                continue;
+            }
+            ZooLocation newLocation = new ZooLocation(value.lat, value.lng);
+            result = currentLocation.dist(newLocation) < minDist ? value.id : result;
+            minDist = Math.min(currentLocation.dist(newLocation), minDist);
+        }
+        return result;
+    }
+
+    public String getIdFromName(String name) {
+        for (Map.Entry<String, ZooDataItem> entry : exhibitInfo.entrySet()) {
+            String key = entry.getKey();
+            ZooDataItem value = entry.getValue();
+            if (value.name.equals(name)) {
+                return key;
+            }
+        }
+        return null;
     }
 
     public Map<String, ZooDataItem> getExhibitInfo() {
