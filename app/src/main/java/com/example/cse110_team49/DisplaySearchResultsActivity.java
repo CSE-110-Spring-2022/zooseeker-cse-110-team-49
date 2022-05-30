@@ -33,7 +33,7 @@ public class DisplaySearchResultsActivity extends AppCompatActivity {
         String input = extras.getString("input").toLowerCase();
 
         // Map<String, ZooDataItem.VertexInfo> vInfo = ZooDataItem.loadVertexInfoJSON(this, "sample_node_info.json");
-        Map<String, ArrayList<String>>  reversedVInfo = lm.getReversedInfo();
+        Map<String, ArrayList<String>> reversedVInfo = lm.getReversedInfo();
 
         AnimalAdapter adapter = new AnimalAdapter();
         adapter.setHasStableIds(true);
