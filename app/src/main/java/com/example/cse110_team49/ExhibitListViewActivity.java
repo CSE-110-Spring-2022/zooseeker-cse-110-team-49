@@ -195,8 +195,12 @@ public class ExhibitListViewActivity extends AppCompatActivity {
         saveStatus();
     }
 
+    /**
+     * TODO: check current location
+     * @param view
+     */
     public void onPlanRouteClicked(View view) {
-        Intent intent=new Intent(this, PlanRouteActivity.class);
+        Intent intent = new Intent(this, PlanRouteActivity.class);
         intent.putExtra("from", currentLocationID);
         intent.putExtra("detailed", is_detailed);
         startActivityForResult(intent, 3);
