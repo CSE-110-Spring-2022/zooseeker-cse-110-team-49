@@ -144,7 +144,7 @@ public class NavigationActivity extends AppCompatActivity {
                         briefInfo.add(oldBrief);
                     }
                 }
-                for (int j = 1; j < briefInfo.size(); j++) {
+                for (int j = 0; j < briefInfo.size(); j++) {
                     ArrayList<String> info = briefInfo.get(j);
                     if (Double.parseDouble(info.get(2)) == 0 && j == briefInfo.size() - 1) {
                         message += "==> Explore in " + info.get(3) + "\n";
