@@ -21,9 +21,9 @@ import android.view.ViewParent;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -38,9 +38,10 @@ import java.util.List;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MS2_5_Test {
+public class MS2_8_Test {
 
-
+    @Rule
+    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
     private ExhibitDao dao;
     private ExhibitDatabase db;
 
@@ -62,12 +63,9 @@ public class MS2_5_Test {
             dao.delete(e);
         }
     }
-    @Rule
-    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
-            new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void mS2_5_Test() {
+    public void mS2_8_Test() {
         ViewInteraction materialAutoCompleteTextView = onView(
                 allOf(withId(R.id.searchInput),
                         childAtPosition(
@@ -109,6 +107,36 @@ public class MS2_5_Test {
         materialButton3.perform(click());
 
         ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.add_animal), withText("Add"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.animal_items),
+                                        2),
+                                1),
+                        isDisplayed()));
+        materialButton4.perform(click());
+
+        ViewInteraction materialButton5 = onView(
+                allOf(withId(R.id.add_animal), withText("Add"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.animal_items),
+                                        3),
+                                1),
+                        isDisplayed()));
+        materialButton5.perform(click());
+
+        ViewInteraction materialButton6 = onView(
+                allOf(withId(R.id.add_animal), withText("Add"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.animal_items),
+                                        4),
+                                1),
+                        isDisplayed()));
+        materialButton6.perform(click());
+
+        ViewInteraction materialButton7 = onView(
                 allOf(withId(R.id.back_button), withText("Back"),
                         childAtPosition(
                                 childAtPosition(
@@ -116,9 +144,9 @@ public class MS2_5_Test {
                                         0),
                                 1),
                         isDisplayed()));
-        materialButton4.perform(click());
+        materialButton7.perform(click());
 
-        ViewInteraction materialButton5 = onView(
+        ViewInteraction materialButton8 = onView(
                 allOf(withId(R.id.myList), withText("LIST"),
                         childAtPosition(
                                 childAtPosition(
@@ -126,9 +154,9 @@ public class MS2_5_Test {
                                         0),
                                 2),
                         isDisplayed()));
-        materialButton5.perform(click());
+        materialButton8.perform(click());
 
-        ViewInteraction materialButton6 = onView(
+        ViewInteraction materialButton9 = onView(
                 allOf(withId(R.id.plan_button), withText("Plan"),
                         childAtPosition(
                                 childAtPosition(
@@ -136,9 +164,9 @@ public class MS2_5_Test {
                                         0),
                                 4),
                         isDisplayed()));
-        materialButton6.perform(click());
+        materialButton9.perform(click());
 
-        ViewInteraction materialButton7 = onView(
+        ViewInteraction materialButton10 = onView(
                 allOf(withId(R.id.next_in_list),
                         childAtPosition(
                                 childAtPosition(
@@ -146,68 +174,50 @@ public class MS2_5_Test {
                                         0),
                                 5),
                         isDisplayed()));
-        materialButton7.perform(click());
-
-        ViewInteraction materialButton8 = onView(
-                allOf(withId(R.id.MockLocation), withText("Input"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                11),
-                        isDisplayed()));
-        materialButton8.perform(click());
-
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.latitude_input),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_root),
-                                        childAtPosition(
-                                                withId(android.R.id.custom),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatEditText.perform(replaceText("1111"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.longitude_input),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_root),
-                                        childAtPosition(
-                                                withId(android.R.id.custom),
-                                                0)),
-                                3),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("-1111"), closeSoftKeyboard());
-
-        ViewInteraction materialButton9 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton9.perform(scrollTo(), click());
-
-        ViewInteraction materialButton10 = onView(
-                allOf(withId(android.R.id.button1), withText("YES"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton10.perform(scrollTo(), click());
+        materialButton10.perform(click());
 
         ViewInteraction materialButton11 = onView(
-                allOf(withId(R.id.plan_button), withText("Plan"),
+                allOf(withId(R.id.next_in_list),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                4),
+                                5),
                         isDisplayed()));
         materialButton11.perform(click());
-        onView(withId(R.id.plan_to)).check(matches(withText("Bali Mynah")));
+
+        ViewInteraction materialButton12 = onView(
+                allOf(withId(R.id.skip_exhibit), withText("Skip"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                9),
+                        isDisplayed()));
+        materialButton12.perform(click());
+
+        ViewInteraction materialButton13 = onView(
+                allOf(withId(android.R.id.button1), withText("Yes"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton13.perform(scrollTo(), click());
+
+        ViewInteraction materialButton14 = onView(
+                allOf(withId(R.id.next_in_list),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton14.perform(click());
+        onView(withId(R.id.plan_from)).check(matches(withText("Blue Capped Motmot")));
+        onView(withId(R.id.plan_to)).check(matches(withText("Emerald Dove")));
+
+
     }
 
     private static Matcher<View> childAtPosition(
