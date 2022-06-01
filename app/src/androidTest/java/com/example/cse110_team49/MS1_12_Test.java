@@ -5,40 +5,64 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RoutePlanSkipTest {
+public class MS1_12_Test {
+
+    private ExhibitDao dao;
+    private ExhibitDatabase db;
+
+    @Before
+    public void createDb() {
+        Context context = ApplicationProvider.getApplicationContext();
+        db = ExhibitDatabase.getSingleton(context);
+        dao = db.exhibitDao();
+        List<Exhibit> lst = dao.getAll();
+        for (Exhibit e : lst) {
+            dao.delete(e);
+        }
+    }
+
+    @After
+    public void clearDb() {
+        List<Exhibit> lst = dao.getAll();
+        for (Exhibit e : lst) {
+            dao.delete(e);
+        }
+    }
 
     @Rule
-    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
-            new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void routePlanSkipTest() {
+    public void mS1_12_Test() {
         ViewInteraction materialAutoCompleteTextView = onView(
                 allOf(withId(R.id.searchInput),
                         childAtPosition(
@@ -140,109 +164,54 @@ public class RoutePlanSkipTest {
         materialButton9.perform(click());
 
         ViewInteraction materialButton10 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
+                allOf(withId(R.id.next_in_list),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                9),
+                                5),
                         isDisplayed()));
         materialButton10.perform(click());
 
         ViewInteraction materialButton11 = onView(
-                allOf(withId(android.R.id.button1), withText("Yes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton11.perform(scrollTo(), click());
-
-        ViewInteraction materialButton12 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
+                allOf(withId(R.id.next_in_list),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                9),
+                                5),
+                        isDisplayed()));
+        materialButton11.perform(click());
+
+        ViewInteraction materialButton12 = onView(
+                allOf(withId(R.id.next_in_list),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
                         isDisplayed()));
         materialButton12.perform(click());
 
         ViewInteraction materialButton13 = onView(
-                allOf(withId(android.R.id.button1), withText("Yes"),
+                allOf(withId(R.id.prev_in_list),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
+                                        withId(android.R.id.content),
                                         0),
-                                3)));
-        materialButton13.perform(scrollTo(), click());
+                                6),
+                        isDisplayed()));
+        materialButton13.perform(click());
 
         ViewInteraction materialButton14 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
+                allOf(withId(R.id.prev_in_list),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                9),
+                                6),
                         isDisplayed()));
         materialButton14.perform(click());
-
-        ViewInteraction materialButton15 = onView(
-                allOf(withId(android.R.id.button1), withText("Yes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton15.perform(scrollTo(), click());
-
-        ViewInteraction materialButton16 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                9),
-                        isDisplayed()));
-        materialButton16.perform(click());
-
-        ViewInteraction materialButton17 = onView(
-                allOf(withId(android.R.id.button1), withText("Yes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton17.perform(scrollTo(), click());
-
-        ViewInteraction materialButton18 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                9),
-                        isDisplayed()));
-        materialButton18.perform(click());
-
-        ViewInteraction materialButton19 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton19.perform(scrollTo(), click());
-
-        ViewInteraction materialButton20 = onView(
-                allOf(withId(R.id.button), withText("Go Back"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
-        materialButton20.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
