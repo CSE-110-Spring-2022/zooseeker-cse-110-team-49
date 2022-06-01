@@ -13,10 +13,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -25,20 +27,46 @@ import androidx.test.filters.LargeTest;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RoutePlanSkipTest {
+public class MS2_5_Test {
 
+
+    private ExhibitDao dao;
+    private ExhibitDatabase db;
+
+    @Before
+    public void createDb() {
+        Context context = ApplicationProvider.getApplicationContext();
+        db = ExhibitDatabase.getSingleton(context);
+        dao = db.exhibitDao();
+        List<Exhibit> lst = dao.getAll();
+        for (Exhibit e : lst) {
+            dao.delete(e);
+        }
+    }
+
+    @After
+    public void clearDb() {
+        List<Exhibit> lst = dao.getAll();
+        for (Exhibit e : lst) {
+            dao.delete(e);
+        }
+    }
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void routePlanSkipTest() {
+    public void mS2_5_Test() {
         ViewInteraction materialAutoCompleteTextView = onView(
                 allOf(withId(R.id.searchInput),
                         childAtPosition(
@@ -47,7 +75,7 @@ public class RoutePlanSkipTest {
                                         0),
                                 0),
                         isDisplayed()));
-        materialAutoCompleteTextView.perform(replaceText("mammal"), closeSoftKeyboard());
+        materialAutoCompleteTextView.perform(replaceText("bird"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.searchButton), withText("Search"),
@@ -80,36 +108,6 @@ public class RoutePlanSkipTest {
         materialButton3.perform(click());
 
         ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.add_animal), withText("Add"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.animal_items),
-                                        2),
-                                1),
-                        isDisplayed()));
-        materialButton4.perform(click());
-
-        ViewInteraction materialButton5 = onView(
-                allOf(withId(R.id.add_animal), withText("Add"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.animal_items),
-                                        3),
-                                1),
-                        isDisplayed()));
-        materialButton5.perform(click());
-
-        ViewInteraction materialButton6 = onView(
-                allOf(withId(R.id.add_animal), withText("Add"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.animal_items),
-                                        4),
-                                1),
-                        isDisplayed()));
-        materialButton6.perform(click());
-
-        ViewInteraction materialButton7 = onView(
                 allOf(withId(R.id.back_button), withText("Back"),
                         childAtPosition(
                                 childAtPosition(
@@ -117,9 +115,9 @@ public class RoutePlanSkipTest {
                                         0),
                                 1),
                         isDisplayed()));
-        materialButton7.perform(click());
+        materialButton4.perform(click());
 
-        ViewInteraction materialButton8 = onView(
+        ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.myList), withText("LIST"),
                         childAtPosition(
                                 childAtPosition(
@@ -127,9 +125,9 @@ public class RoutePlanSkipTest {
                                         0),
                                 2),
                         isDisplayed()));
-        materialButton8.perform(click());
+        materialButton5.perform(click());
 
-        ViewInteraction materialButton9 = onView(
+        ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.plan_button), withText("Plan"),
                         childAtPosition(
                                 childAtPosition(
@@ -137,112 +135,77 @@ public class RoutePlanSkipTest {
                                         0),
                                 4),
                         isDisplayed()));
-        materialButton9.perform(click());
+        materialButton6.perform(click());
 
-        ViewInteraction materialButton10 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
+        ViewInteraction materialButton7 = onView(
+                allOf(withId(R.id.next_in_list),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                9),
+                                5),
                         isDisplayed()));
-        materialButton10.perform(click());
+        materialButton7.perform(click());
 
-        ViewInteraction materialButton11 = onView(
-                allOf(withId(android.R.id.button1), withText("Yes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton11.perform(scrollTo(), click());
-
-        ViewInteraction materialButton12 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
+        ViewInteraction materialButton8 = onView(
+                allOf(withId(R.id.MockLocation), withText("Input"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                9),
+                                11),
                         isDisplayed()));
-        materialButton12.perform(click());
+        materialButton8.perform(click());
 
-        ViewInteraction materialButton13 = onView(
-                allOf(withId(android.R.id.button1), withText("Yes"),
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.latitude_input),
                         childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton13.perform(scrollTo(), click());
-
-        ViewInteraction materialButton14 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                9),
+                                allOf(withId(R.id.layout_root),
+                                        childAtPosition(
+                                                withId(android.R.id.custom),
+                                                0)),
+                                1),
                         isDisplayed()));
-        materialButton14.perform(click());
+        appCompatEditText.perform(replaceText("1111"), closeSoftKeyboard());
 
-        ViewInteraction materialButton15 = onView(
-                allOf(withId(android.R.id.button1), withText("Yes"),
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.longitude_input),
                         childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton15.perform(scrollTo(), click());
-
-        ViewInteraction materialButton16 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                9),
+                                allOf(withId(R.id.layout_root),
+                                        childAtPosition(
+                                                withId(android.R.id.custom),
+                                                0)),
+                                3),
                         isDisplayed()));
-        materialButton16.perform(click());
+        appCompatEditText2.perform(replaceText("-1111"), closeSoftKeyboard());
 
-        ViewInteraction materialButton17 = onView(
-                allOf(withId(android.R.id.button1), withText("Yes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton17.perform(scrollTo(), click());
-
-        ViewInteraction materialButton18 = onView(
-                allOf(withId(R.id.skip_exhibit), withText("Skip"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                9),
-                        isDisplayed()));
-        materialButton18.perform(click());
-
-        ViewInteraction materialButton19 = onView(
+        ViewInteraction materialButton9 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        materialButton19.perform(scrollTo(), click());
+        materialButton9.perform(scrollTo(), click());
 
-        ViewInteraction materialButton20 = onView(
-                allOf(withId(R.id.button), withText("Go Back"),
+        ViewInteraction materialButton10 = onView(
+                allOf(withId(android.R.id.button1), withText("YES"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton10.perform(scrollTo(), click());
+
+        ViewInteraction materialButton11 = onView(
+                allOf(withId(R.id.plan_button), withText("Plan"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 4),
                         isDisplayed()));
-        materialButton20.perform(click());
+        materialButton11.perform(click());
     }
 
     private static Matcher<View> childAtPosition(

@@ -9,20 +9,17 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.TextView;
 
-import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -37,12 +34,10 @@ import java.util.List;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddtoListTest {
+public class MS2_1ii_Test {
+
     private ExhibitDao dao;
     private ExhibitDatabase db;
-
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Before
     public void createDb() {
@@ -62,11 +57,12 @@ public class AddtoListTest {
             dao.delete(e);
         }
     }
-
+    @Rule
+    public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void addtoListTest() {
-        int itemCount = 0;
+    public void mS2_1ii_Test() {
         ViewInteraction materialAutoCompleteTextView = onView(
                 allOf(withId(R.id.searchInput),
                         childAtPosition(
@@ -75,7 +71,7 @@ public class AddtoListTest {
                                         0),
                                 0),
                         isDisplayed()));
-        materialAutoCompleteTextView.perform(replaceText("mammal"), closeSoftKeyboard());
+        materialAutoCompleteTextView.perform(replaceText("bird"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.searchButton), withText("Search"),
@@ -87,7 +83,6 @@ public class AddtoListTest {
                         isDisplayed()));
         materialButton.perform(click());
 
-
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.add_animal), withText("Add"),
                         childAtPosition(
@@ -97,7 +92,6 @@ public class AddtoListTest {
                                 1),
                         isDisplayed()));
         materialButton2.perform(click());
-        itemCount++;
 
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.add_animal), withText("Add"),
@@ -108,18 +102,16 @@ public class AddtoListTest {
                                 1),
                         isDisplayed()));
         materialButton3.perform(click());
-        itemCount++;
 
         ViewInteraction materialButton4 = onView(
                 allOf(withId(R.id.add_animal), withText("Add"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.animal_items),
-                                        3),
+                                        2),
                                 1),
                         isDisplayed()));
         materialButton4.perform(click());
-        itemCount++;
 
         ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.back_button), withText("Back"),
@@ -130,8 +122,6 @@ public class AddtoListTest {
                                 1),
                         isDisplayed()));
         materialButton5.perform(click());
-
-
 
         ViewInteraction materialButton6 = onView(
                 allOf(withId(R.id.myList), withText("LIST"),
@@ -144,19 +134,45 @@ public class AddtoListTest {
         materialButton6.perform(click());
 
         ViewInteraction materialButton7 = onView(
-                allOf(withId(R.id.return_button), withText("Back"),
+                allOf(withId(R.id.plan_button), withText("Plan"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                2),
+                                4),
                         isDisplayed()));
         materialButton7.perform(click());
 
-        assertEquals(itemCount, 3);
+        ViewInteraction materialButton8 = onView(
+                allOf(withId(R.id.next_in_list),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton8.perform(click());
 
+        ViewInteraction materialButton9 = onView(
+                allOf(withId(R.id.next_in_list),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton9.perform(click());
+
+        ViewInteraction materialButton10 = onView(
+                allOf(withId(R.id.next_in_list),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        materialButton10.perform(click());
     }
-
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
@@ -176,6 +192,4 @@ public class AddtoListTest {
             }
         };
     }
-
-
 }
