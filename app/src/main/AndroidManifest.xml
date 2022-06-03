@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cse110_team49">
+    package="com.example.zooseeker">
 
     <application
         android:allowBackup="true"
@@ -10,19 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSE110Team49">
         <activity
-            android:name=".PlanRouteActivity"
+            android:name="com.example.zooseeker.PlanRouteActivity"
             android:exported="false" />
         <activity
-            android:name=".NavigationActivity"
+            android:name="com.example.zooseeker.NavigationActivity"
             android:exported="false" />
         <activity
-            android:name=".DisplaySearchResultsActivity"
+            android:name="com.example.zooseeker.DisplaySearchResultsActivity"
             android:exported="true" />
         <activity
-            android:name=".ExhibitListViewActivity"
+            android:name="com.example.zooseeker.ExhibitListViewActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.zooseeker.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
