@@ -201,9 +201,4 @@ public class MainActivity extends AppCompatActivity {
         search_page.putExtra("input", search_input.getText().toString());
         startActivity(search_page);
     }
-
-    public void openMap(View view) {
-        Intent map = new Intent(this, MapsActivity.class);
-        startActivity(map);
-    }
 }
