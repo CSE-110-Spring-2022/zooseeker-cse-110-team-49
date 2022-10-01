@@ -1,5 +1,5 @@
 # ZooSeeker: An Android App
-This app helps its users plan a visit and navigate in San Diego Zoo. It can guide its users on the shortest path that go through all user-specified animal exhibitions.
+This app helps its users plan a visit and navigate in San Diego Zoo. It can guide its users on the shortest path that visits all user-selected animal exhibitions.
 
 ## Demonstration
 ZooSeeker Search Process
